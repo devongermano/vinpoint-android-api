@@ -5,6 +5,8 @@ import android.support.test.rule.GrantPermissionRule
 import android.support.test.runner.AndroidJUnit4
 import android.util.Log
 import io.cphandheld.vinpoint.api.models.Credentials
+import io.cphandheld.vinpoint.api.models.InventoryModel
+import io.reactivex.rxkotlin.subscribeBy
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -21,8 +23,15 @@ import java.util.concurrent.CountDownLatch
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
 
-    @Rule @JvmField
+    @Rule
+    @JvmField
     val grantInternetRule = GrantPermissionRule.grant(android.Manifest.permission.INTERNET);
+
+    // Admin user, expires end of 2018
+    private val _token: String = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJBZG1pbiJdLCJpc3MiOiJodHRwczovL2NwaHQuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDU4Yzk1Y2Q1MDBjNGM1NmIzY2Y5ODE1MiIsImF1ZCI6Ilpld2FSdWVHNTdydHNqbDZuNkZaZ1hFMHlIazR3SW5TIiwiaWF0IjoxNTA5OTk0NzMwLCJleHAiOjE1NDYzMDA3OTl9.uQUyp0zeKSvdB8Q2e_iOr778D5NwwnHP8qE0C3i8l4Q"
+    private val cred = Credentials(_token, 1)
+
+    private val appContext = InstrumentationRegistry.getTargetContext()
 
     @Test
     fun useAppContext() {
@@ -30,32 +39,28 @@ class ExampleInstrumentedTest {
         val appContext = InstrumentationRegistry.getTargetContext()
         assertEquals("io.cphandheld.vinpoint.api", appContext.packageName)
     }
-    private val _token: String = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJBZG1pbiJdLCJpc3MiOiJodHRwczovL2NwaHQuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDU4Yzk1Y2Q1MDBjNGM1NmIzY2Y5ODE1MiIsImF1ZCI6Ilpld2FSdWVHNTdydHNqbDZuNkZaZ1hFMHlIazR3SW5TIiwiaWF0IjoxNTA5OTk0NzMwLCJleHAiOjE1MTAwMzA3MzB9.an2FCCpn6oaGjaxONk_U5wEXe-Hb5jEUNB2MKVBXXu0"
 
     @Test
     fun getsInventory() {
-        val appContext = InstrumentationRegistry.getTargetContext()
-        val cred = Credentials(_token,1)
-        Log.i("TESTS", "Starting getsInventory");
-
-//        Inventory(appContext).search(cred,"1B", "N/A").subscribe { result ->
-//            Log.i("TESTS","InventoryId: " + result.data!![0].InventoryId.toString())
-//            Log.i("TESTS", "VIN: " + result.data!![0].VIN)
-//            assertEquals("1234", result.data!![0].VIN)
-//        }
-
         val latch = CountDownLatch(1)
-
-
-        Inventory(appContext).search(cred,"1B", "N/A").subscribe(
-                { inv -> Log.i("TESTS", "Received inventory")
-                    latch.countDown();
-                },
-                { e -> Log.e("TESTS", "Error: " + e.toString())
-                    latch.countDown();
-                }
+        var result: InventoryModel? = null
+        Inventory(appContext).get(cred, 1234).subscribeBy(
+                onSuccess = { result = it.data; latch.countDown() },
+                onError = { throw it }
         )
-
         latch.await()
+        assertEquals("1FTBF2A69GEC79810", result!!.VIN);
+    }
+
+    @Test
+    fun searchInventory() {
+        val latch = CountDownLatch(1)
+        var result: Array<InventoryModel>? = null
+        Inventory(appContext).search(cred, "1B", "N/A").subscribeBy(
+                onSuccess = { result = it.data; latch.countDown() },
+                onError = { throw it }
+        )
+        latch.await()
+        assertEquals(18, result!!.size)
     }
 }
