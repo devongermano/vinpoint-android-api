@@ -5,8 +5,10 @@ import io.cphandheld.vinpoint.api.Request
 import io.reactivex.Single
 
 /**
- * Created by christian on 11/3/17.
- */
+* Created by christian on 11/3/17.
+*
+* (C) CP Handheld Technologies, LLC
+*/
 
 class RequestFactory{
 

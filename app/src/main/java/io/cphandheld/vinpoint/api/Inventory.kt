@@ -10,8 +10,10 @@ import io.cphandheld.vinpoint.api.models.InventoryObject
 import io.reactivex.Single
 
 /**
- * Created by christian on 11/2/17.
- */
+* Created by christian on 11/2/17.
+*
+* (C) CP Handheld Technologies, LLC
+*/
 
 class Inventory(context: Context){
 

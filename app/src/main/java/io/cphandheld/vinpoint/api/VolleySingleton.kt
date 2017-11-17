@@ -6,8 +6,10 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
 
 /**
- * Created by christian on 10/31/17.
- */
+* Created by christian on 10/31/17.
+*
+* (C) CP Handheld Technologies, LLC
+*/
 
 class VolleySingleton private constructor(context: Context) {
 
@@ -36,11 +38,11 @@ class VolleySingleton private constructor(context: Context) {
         protectedRequestQueue.add(request)
     }
 
-    fun buildURL(fragment: String): String{
+    fun buildURL(fragment: String): String {
         return baseURL + fragment
     }
 
-    fun setURL(url: String){
+    fun setURL(url: String) {
         baseURL = url
     }
 

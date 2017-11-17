@@ -7,10 +7,12 @@ import io.cphandheld.vinpoint.api.models.LoginResponse
 import io.reactivex.Single
 
 /**
- * Created by christian on 11/2/17.
- */
+* Created by christian on 11/2/17.
+*
+* (C) CP Handheld Technologies, LLC
+*/
 
-class Security(context: Context){
+class Security(context: Context) {
 
     private val queue: VolleySingleton = VolleySingleton.getInstance(context)
 

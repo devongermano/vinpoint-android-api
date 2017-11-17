@@ -4,8 +4,10 @@ import io.cphandheld.vinpoint.api.models.Credentials
 import io.reactivex.SingleEmitter
 
 /**
- * Created by christian on 11/1/17.
- */
+* Created by christian on 11/1/17.
+*
+* (C) CP Handheld Technologies, LLC
+*/
 
 class SecureRequest<T>
 constructor(credentials: Credentials, method: Int, url: String, jsonRequest: Any?, responseType: Class<T>, subscriber: SingleEmitter<T>)
