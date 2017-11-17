@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.cphandheld.vinpoint.api">
+          package="io.cphandheld.vinpoint.api">
 
     <application
         android:allowBackup="true"

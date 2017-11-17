@@ -1,4 +1,4 @@
-package com.cphandheld.vinpoint.api
+package io.cphandheld.vinpoint.api
 
 import org.junit.Test
 

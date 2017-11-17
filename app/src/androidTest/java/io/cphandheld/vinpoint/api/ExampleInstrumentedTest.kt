@@ -1,4 +1,4 @@
-package com.cphandheld.vinpoint.api
+package io.cphandheld.vinpoint.api
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
