@@ -4,18 +4,6 @@ package io.cphandheld.vinpoint.api.models
  * Created by christian on 10/31/17.
  */
 
-class InventoryArray{
-
-    var data: Array<InventoryModel>? = null
-
-}
-
-class InventoryObject{
-
-    var data: InventoryModel? = null
-
-}
-
 class InventoryModel{
 
     var DealershipName = ""
@@ -51,14 +39,3 @@ class InventoryModel{
 
 }
 
-class Tags{
-
-    var RecordId = 0
-    var TagDefinitionId = 0
-    var InventoryId = 0
-    var Color = ""
-    var Label = ""
-    var Status = 0
-    var OrganizationId = 0
-
-}

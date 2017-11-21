@@ -45,7 +45,7 @@ class ExampleInstrumentedTest {
         val latch = CountDownLatch(1)
         var result: InventoryModel? = null
         Inventory(appContext).get(cred, 1234).subscribeBy(
-                onSuccess = { result = it.data; latch.countDown() },
+                onSuccess = { result = it; latch.countDown() },
                 onError = { throw it }
         )
         latch.await()
@@ -57,7 +57,7 @@ class ExampleInstrumentedTest {
         val latch = CountDownLatch(1)
         var result: Array<InventoryModel>? = null
         Inventory(appContext).search(cred, "1B", "N/A").subscribeBy(
-                onSuccess = { result = it.data; latch.countDown() },
+                onSuccess = { result = it; latch.countDown() },
                 onError = { throw it }
         )
         latch.await()

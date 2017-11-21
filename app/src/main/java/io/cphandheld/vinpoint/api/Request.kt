@@ -5,6 +5,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.HttpResponse
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import io.cphandheld.vinpoint.api.models.StatusResponse
 import io.reactivex.SingleEmitter
 
@@ -17,7 +18,10 @@ open class Request<T>
         subscriber.onSuccess(result)
     }
     else{
-        val result = Gson().fromJson(response.toString(), responseType)
+        val gson = GsonBuilder()
+                .registerTypeAdapter(responseType, GsonDataDeserializer<T>("data"))
+                .create()
+        val result = gson.fromJson(response.toString(), responseType)
         subscriber.onSuccess(result)
     }
 
