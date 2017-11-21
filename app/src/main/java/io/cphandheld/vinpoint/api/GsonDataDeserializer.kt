@@ -17,6 +17,13 @@ open class GsonDataDeserializer<T>(elementNameIn: String) : JsonDeserializer<T>
     private val elementName = elementNameIn
 
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): T {
+        // If user passed Unit::class.java as type, they don't care about the body and
+        // just want the status code.  So return an empty object.
+        if (typeOfT == Unit::class.java) return Gson().fromJson("{}", typeOfT)
+
+        // The user is requesting a specific type of object, so check to see if the
+        // json includes a wrapping element, such as "data". If so, set the parsing
+        // root to that element and parse.  Otherwise, just parse from the current location.
         val element: JsonElement? = json!!.asJsonObject.get(elementName)
         val root = element ?: json
         return Gson().fromJson(root, typeOfT)

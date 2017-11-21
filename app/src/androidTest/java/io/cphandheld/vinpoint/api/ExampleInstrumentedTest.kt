@@ -3,17 +3,15 @@ package io.cphandheld.vinpoint.api
 import android.support.test.InstrumentationRegistry
 import android.support.test.rule.GrantPermissionRule
 import android.support.test.runner.AndroidJUnit4
-import android.util.Log
+import com.android.volley.Request.Method.GET
 import io.cphandheld.vinpoint.api.models.Credentials
-import io.cphandheld.vinpoint.api.models.InventoryModel
-import io.reactivex.rxkotlin.subscribeBy
+import io.cphandheld.vinpoint.api.models.StatusResponse
 
 import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Assert.*
 import org.junit.Rule
-import java.util.concurrent.CountDownLatch
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -41,26 +39,49 @@ class ExampleInstrumentedTest {
     }
 
     @Test
+    fun testStatusResponse() {
+        val queue: VolleySingleton = VolleySingleton.getInstance(appContext)
+        var url = queue.buildURL("/v1/status/health")
+
+        val statusResponse = StatusResponse()
+        val sub = RequestFactory.getSecureSingle(cred, queue, GET, url, null, Unit::class.java, statusResponse)
+        sub.waitForTest()
+
+        assertEquals(200, statusResponse.statusCode)
+    }
+
+    @Test
+    fun testUnauthorized() {
+        val queue: VolleySingleton = VolleySingleton.getInstance(appContext)
+        var url = queue.buildURL("/v1/Inventory/1234")
+
+        var oldToken = cred.authToken
+        cred.authToken = "xxx" + cred.authToken
+
+        val statusResponse = StatusResponse()
+        val sub = RequestFactory.getSecureSingle(cred, queue, GET, url, null, Unit::class.java, statusResponse)
+        sub.waitForTest()
+
+        assertEquals(401, statusResponse.statusCode)
+        cred.authToken = oldToken
+    }
+
+    @Test
     fun getsInventory() {
-        val latch = CountDownLatch(1)
-        var result: InventoryModel? = null
-        Inventory(appContext).get(cred, 1234).subscribeBy(
-                onSuccess = { result = it; latch.countDown() },
-                onError = { throw it }
-        )
-        latch.await()
-        assertEquals("1FTBF2A69GEC79810", result!!.VIN);
+        var statusResponse = StatusResponse()
+        var sub = Inventory(appContext).get(cred, 1234, statusResponse)
+        var result = sub.waitForTest()
+        assertEquals("1FTBF2A69GEC79810", result!!.VIN)
+        assertEquals(200,statusResponse.statusCode)
     }
 
     @Test
     fun searchInventory() {
-        val latch = CountDownLatch(1)
-        var result: Array<InventoryModel>? = null
-        Inventory(appContext).search(cred, "1B", "N/A").subscribeBy(
-                onSuccess = { result = it; latch.countDown() },
-                onError = { throw it }
-        )
-        latch.await()
+        var statusResponse = StatusResponse()
+        var sub = Inventory(appContext).search(cred, "1B", "N/A", statusResponse)
+        var result = sub.waitForTest()
         assertEquals(18, result!!.size)
+        assertEquals(200,statusResponse.statusCode)
     }
+
 }

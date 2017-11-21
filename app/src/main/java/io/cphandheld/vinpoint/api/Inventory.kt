@@ -1,10 +1,10 @@
 package io.cphandheld.vinpoint.api
 
 import android.content.Context
-import com.android.volley.Request
 import com.android.volley.Request.Method.GET
 import io.cphandheld.vinpoint.api.models.Credentials
 import io.cphandheld.vinpoint.api.models.InventoryModel
+import io.cphandheld.vinpoint.api.models.StatusResponse
 import io.reactivex.Single
 
 /**
@@ -17,26 +17,20 @@ class Inventory(context: Context){
 
     private val queue: VolleySingleton = VolleySingleton.getInstance(context)
 
-    fun search(Credentials: Credentials, idFragment: String, filter: String): Single<Array<InventoryModel>> {
+    fun search(Credentials: Credentials, idFragment: String, filter: String, statusResponse: StatusResponse? = null): Single<Array<InventoryModel>> {
 
         var url = queue.buildURL("/v1/Inventory/extendedsearch/$idFragment/${Credentials.orgID}")
 
-        return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, Array<InventoryModel>::class.java)
+        return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, Array<InventoryModel>::class.java, statusResponse)
 
     }
 
-    fun get(Credentials: Credentials, inventoryID: Int): Single<InventoryModel> {
+    fun get(Credentials: Credentials, inventoryID: Int, statusResponse: StatusResponse? = null): Single<InventoryModel> {
 
         var url = queue.buildURL("/v1/Inventory/$inventoryID")
 
-        return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, InventoryModel::class.java)
+        return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, InventoryModel::class.java, statusResponse)
 
     }
-
-//    fun markRemoved(inventoryModel: InventoryModel){
-//
-//        var url = queue.buildURL("/v1/Inventory/delete")
-//
-//    }
 
 }

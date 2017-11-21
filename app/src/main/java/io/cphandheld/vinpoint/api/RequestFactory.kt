@@ -2,6 +2,7 @@ package io.cphandheld.vinpoint.api
 
 import io.cphandheld.vinpoint.api.models.Credentials
 import io.cphandheld.vinpoint.api.Request
+import io.cphandheld.vinpoint.api.models.StatusResponse
 import io.reactivex.Single
 
 /**
@@ -13,16 +14,18 @@ import io.reactivex.Single
 class RequestFactory{
 
     companion object {
-        fun <T> getSecureSingle(credentials: Credentials, queue: VolleySingleton, method: Int, url: String, jsonRequest: Any?, responseType: Class<T>): Single<T> {
+        fun <T> getSecureSingle(credentials: Credentials, queue: VolleySingleton, method: Int, url: String, jsonRequest: Any?,
+                                responseType: Class<T>, statusResponse: StatusResponse? = null): Single<T> {
             return Single.create { subscriber ->
-                val request = SecureRequest(credentials, method, url, jsonRequest, responseType, subscriber)
+                val request = SecureRequest(credentials, method, url, jsonRequest, responseType, subscriber, statusResponse )
                 queue.addToRequestQueue(request)
             }
         }
 
-        fun <T> getSingle(queue: VolleySingleton, method: Int, url: String, jsonRequest: Any?, responseType: Class<T>): Single<T>{
+        fun <T> getSingle(queue: VolleySingleton, method: Int, url: String, jsonRequest: Any?,
+                          responseType: Class<T>, statusResponse: StatusResponse? = null): Single<T>{
             return Single.create { subscriber ->
-                val request = Request(method, url, jsonRequest, responseType, subscriber)
+                val request = Request(method, url, jsonRequest, responseType, subscriber, statusResponse)
                 queue.addToRequestQueue(request)
             }
         }

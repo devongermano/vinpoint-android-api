@@ -1,17 +1,19 @@
 package io.cphandheld.vinpoint.api
 
 import io.cphandheld.vinpoint.api.models.Credentials
+import io.cphandheld.vinpoint.api.models.StatusResponse
 import io.reactivex.SingleEmitter
 
 /**
-* Created by christian on 11/1/17.
-*
-* (C) CP Handheld Technologies, LLC
-*/
+ * Created by christian on 11/1/17.
+ *
+ * (C) CP Handheld Technologies, LLC
+ */
 
-class SecureRequest<T>
-constructor(credentials: Credentials, method: Int, url: String, jsonRequest: Any?, responseType: Class<T>, subscriber: SingleEmitter<T>)
-    : Request<T>(method, url, jsonRequest, responseType, subscriber){
+class SecureRequest<T>(credentials: Credentials, method: Int, url: String, jsonRequest: Any?, responseType: Class<T>,
+                       subscriber: SingleEmitter<T>, statusResponse: StatusResponse? = null)
+
+    : Request<T>(method, url, jsonRequest, responseType, subscriber, statusResponse) {
 
     private val credentials = credentials
 
