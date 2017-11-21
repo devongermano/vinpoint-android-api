@@ -1,5 +1,7 @@
 package io.cphandheld.vinpoint.api.models
 
+import android.nfc.Tag
+
 /**
  * Created by christian on 10/31/17.
  */
@@ -11,7 +13,7 @@ class InventoryModel{
     var Status = 0
     var Journal: Any? = null
     var JournalVehicle: Any? = null
-    var Tags: Array<Tags>? = null
+    var Tags: Array<Tag>? = null
     var InventoryId = 0
     var InventoryStatus = ""
     var VehicleId = 0
