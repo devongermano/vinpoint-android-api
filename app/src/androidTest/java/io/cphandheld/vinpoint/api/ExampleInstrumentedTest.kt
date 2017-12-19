@@ -84,4 +84,14 @@ class ExampleInstrumentedTest {
         assertEquals(200,statusResponse.statusCode)
     }
 
+    @Test
+    fun verifyVehicle() {
+        var statusResponse = StatusResponse()
+
+//        var sub = Scanner(appContext).scan(cred, "2G1WF52E939195923", "1", syncInterface, statusResponse)
+//        var result = sub.waitForTest()
+        //assertEquals(18, result!!.size)
+        assertEquals(200,statusResponse.statusCode)
+    }
+
 }

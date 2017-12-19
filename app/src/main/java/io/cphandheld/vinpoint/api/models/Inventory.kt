@@ -1,19 +1,19 @@
 package io.cphandheld.vinpoint.api.models
 
-import android.nfc.Tag
+import io.realm.RealmObject
 
 /**
  * Created by christian on 10/31/17.
  */
 
-class InventoryModel{
+class InventoryModel : RealmObject() {
 
     var DealershipName = ""
     var LocationName = ""
     var Status = 0
     var Journal: Any? = null
     var JournalVehicle: Any? = null
-    var Tags: Array<Tag>? = null
+    var Tags: Array<TagModel>? = null
     var InventoryId = 0
     var InventoryStatus = ""
     var VehicleId = 0
