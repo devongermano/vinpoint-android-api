@@ -1,7 +1,7 @@
-package io.cphandheld.vinpoint.api
+package io.cphandheld.vinpoint.api.request
 
-import io.cphandheld.vinpoint.api.models.Credentials
-import io.cphandheld.vinpoint.api.models.StatusResponse
+import io.cphandheld.vinpoint.api.models.CPCredentials
+import io.cphandheld.vinpoint.api.models.CPStatusResponse
 import io.reactivex.SingleEmitter
 
 /**
@@ -10,8 +10,8 @@ import io.reactivex.SingleEmitter
  * (C) CP Handheld Technologies, LLC
  */
 
-class SecureRequest<T>(credentials: Credentials, method: Int, url: String, jsonRequest: Any?, responseType: Class<T>,
-                       subscriber: SingleEmitter<T>, statusResponse: StatusResponse? = null)
+class SecureRequest<T>(credentials: CPCredentials, method: Int, url: String, jsonRequest: Any?, responseType: Class<T>,
+                       subscriber: SingleEmitter<T>, statusResponse: CPStatusResponse? = null)
 
     : Request<T>(method, url, jsonRequest, responseType, subscriber, statusResponse) {
 

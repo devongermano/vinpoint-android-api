@@ -4,8 +4,10 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.rule.GrantPermissionRule
 import android.support.test.runner.AndroidJUnit4
 import com.android.volley.Request.Method.GET
-import io.cphandheld.vinpoint.api.models.Credentials
-import io.cphandheld.vinpoint.api.models.StatusResponse
+import io.cphandheld.vinpoint.api.models.CPCredentials
+import io.cphandheld.vinpoint.api.models.CPStatusResponse
+import io.cphandheld.vinpoint.api.request.RequestFactory
+import io.cphandheld.vinpoint.api.singleton.VolleySingleton
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,7 +29,7 @@ class ExampleInstrumentedTest {
 
     // Admin user, expires end of 2018
     private val _token: String = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJBZG1pbiJdLCJpc3MiOiJodHRwczovL2NwaHQuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDU4Yzk1Y2Q1MDBjNGM1NmIzY2Y5ODE1MiIsImF1ZCI6Ilpld2FSdWVHNTdydHNqbDZuNkZaZ1hFMHlIazR3SW5TIiwiaWF0IjoxNTA5OTk0NzMwLCJleHAiOjE1NDYzMDA3OTl9.uQUyp0zeKSvdB8Q2e_iOr778D5NwwnHP8qE0C3i8l4Q"
-    private val cred = Credentials(_token, 1)
+    private val cred = CPCredentials(_token, 1)
 
     private val appContext = InstrumentationRegistry.getTargetContext()
 
@@ -43,7 +45,7 @@ class ExampleInstrumentedTest {
         val queue: VolleySingleton = VolleySingleton.getInstance(appContext)
         var url = queue.buildURL("/v1/status/health")
 
-        val statusResponse = StatusResponse()
+        val statusResponse = CPStatusResponse()
         val sub = RequestFactory.getSecureSingle(cred, queue, GET, url, null, Unit::class.java, statusResponse)
         sub.waitForTest()
 
@@ -58,7 +60,7 @@ class ExampleInstrumentedTest {
         var oldToken = cred.authToken
         cred.authToken = "xxx" + cred.authToken
 
-        val statusResponse = StatusResponse()
+        val statusResponse = CPStatusResponse()
         val sub = RequestFactory.getSecureSingle(cred, queue, GET, url, null, Unit::class.java, statusResponse)
         sub.waitForTest()
 
@@ -68,7 +70,7 @@ class ExampleInstrumentedTest {
 
     @Test
     fun getsInventory() {
-        var statusResponse = StatusResponse()
+        var statusResponse = CPStatusResponse()
         var sub = Inventory(appContext).get(cred, 1234, statusResponse)
         var result = sub.waitForTest()
         assertEquals("1FTBF2A69GEC79810", result!!.VIN)
@@ -77,7 +79,7 @@ class ExampleInstrumentedTest {
 
     @Test
     fun searchInventory() {
-        var statusResponse = StatusResponse()
+        var statusResponse = CPStatusResponse()
         var sub = Inventory(appContext).search(cred, "1B", "N/A", statusResponse)
         var result = sub.waitForTest()
         assertEquals(18, result!!.size)
@@ -86,7 +88,7 @@ class ExampleInstrumentedTest {
 
     @Test
     fun verifyVehicle() {
-        var statusResponse = StatusResponse()
+        var statusResponse = CPStatusResponse()
 
 //        var sub = Scanner(appContext).scan(cred, "2G1WF52E939195923", "1", syncInterface, statusResponse)
 //        var result = sub.waitForTest()

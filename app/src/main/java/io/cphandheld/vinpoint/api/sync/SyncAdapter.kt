@@ -1,11 +1,14 @@
-package io.cphandheld.vinpoint.api
+package io.cphandheld.vinpoint.api.sync
 
 import android.content.Context
 import com.android.volley.Request
+import io.cphandheld.vinpoint.api.singleton.VolleySingleton
+import io.cphandheld.vinpoint.api.hasActiveInternetConnection
 import io.cphandheld.vinpoint.api.models.CPDecodedVIN
 import io.reactivex.Single
-import io.cphandheld.vinpoint.api.models.Credentials
+import io.cphandheld.vinpoint.api.models.CPCredentials
 import io.cphandheld.vinpoint.api.models.InventoryModel
+import io.cphandheld.vinpoint.api.request.RequestFactory
 import io.realm.Realm
 import io.realm.kotlin.where
 
@@ -17,7 +20,7 @@ class SyncAdapter constructor(context: Context) : SyncInterface {
     private val queue: VolleySingleton = VolleySingleton.getInstance(context)
     var mContext: Context = context
 
-    override fun getInventory(Credentials: Credentials, vin: String, dealershipId: String) : Single<InventoryModel> {
+    override fun getInventory(Credentials: CPCredentials, vin: String, dealershipId: String) : Single<InventoryModel> {
 
         var url = queue.buildURL("/v1/Scanner/VerifyVehicle/$vin/DealershipId/$dealershipId/OrganizationId/${Credentials.orgID}")
 

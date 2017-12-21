@@ -1,4 +1,4 @@
-package io.cphandheld.vinpoint.api
+package io.cphandheld.vinpoint.api.request
 
 import android.util.Log
 import com.android.volley.NetworkResponse
@@ -7,13 +7,14 @@ import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import io.cphandheld.vinpoint.api.models.StatusResponse
+import io.cphandheld.vinpoint.api.GsonDataDeserializer
+import io.cphandheld.vinpoint.api.models.CPStatusResponse
 import io.reactivex.SingleEmitter
 import org.json.JSONObject
 
 open class Request<T>(method: Int, url: String, jsonRequest: Any?,
                       private val responseType: Class<T>, subscriber: SingleEmitter<T>,
-                      private val statusResponse: StatusResponse? = null)
+                      private val statusResponse: CPStatusResponse? = null)
 
     : JsonObjectRequest(method, url, null,
         Response.Listener { response ->
@@ -28,18 +29,17 @@ open class Request<T>(method: Int, url: String, jsonRequest: Any?,
         Response.ErrorListener { error ->
             Log.e("Error", error.toString())
             subscriber.onError(error)
-        }
-) {
+        }) {
 
     private val body: String = Gson().toJson(jsonRequest)
 
-    //Update statusCode if StatusResponse object was passed in
+    //Update statusCode if CPStatusResponse object was passed in
     override fun parseNetworkResponse(response: NetworkResponse?): Response<JSONObject> {
         if (statusResponse != null) statusResponse.statusCode = response!!.statusCode
         return super.parseNetworkResponse(response)
     }
 
-    //Update statusCode if StatusResponse object was passed in (separate path for errors)
+    //Update statusCode if CPStatusResponse object was passed in (separate path for errors)
     override fun parseNetworkError(volleyError: VolleyError?): VolleyError {
         if (statusResponse != null) statusResponse.statusCode = volleyError?.networkResponse?.statusCode ?: 0
         return super.parseNetworkError(volleyError)
@@ -61,5 +61,4 @@ open class Request<T>(method: Int, url: String, jsonRequest: Any?,
     override fun getBody(): ByteArray {
         return body.toByteArray()
     }
-
 }

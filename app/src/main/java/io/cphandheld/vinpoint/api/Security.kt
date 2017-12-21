@@ -2,8 +2,10 @@ package io.cphandheld.vinpoint.api
 
 import android.content.Context
 import com.android.volley.Request.Method.POST
-import io.cphandheld.vinpoint.api.models.LoginRequest
-import io.cphandheld.vinpoint.api.models.LoginResponse
+import io.cphandheld.vinpoint.api.models.CPSecurity
+import io.cphandheld.vinpoint.api.models.CPSecurityRequest
+import io.cphandheld.vinpoint.api.request.RequestFactory
+import io.cphandheld.vinpoint.api.singleton.VolleySingleton
 import io.reactivex.Single
 
 /**
@@ -16,18 +18,15 @@ class Security(context: Context) {
 
     private val queue: VolleySingleton = VolleySingleton.getInstance(context)
 
-
-    fun login(clientID: Int, email: String, password: String): Single<LoginResponse> {
+    fun login(clientID: Int, username: String, password: String): Single<CPSecurity> {
 
         val url = queue.buildURL("/Security/login")
 
-        val request = LoginRequest()
+        val request = CPSecurityRequest()
 
-        request.email = email
+        request.username = username
         request.password = password
-        request.provider = "Engenx"
 
-        return RequestFactory.getSingle(queue, POST, url, request, LoginResponse::class.java)
-
+        return RequestFactory.getSingle(queue, POST, url, request, CPSecurity::class.java)
     }
 }

@@ -2,35 +2,25 @@ package io.cphandheld.vinpoint.api
 
 import android.content.Context
 import com.android.volley.Request.Method.GET
-import io.cphandheld.vinpoint.api.models.Credentials
-import io.cphandheld.vinpoint.api.models.InventoryModel
-import io.cphandheld.vinpoint.api.models.StatusResponse
+import io.cphandheld.vinpoint.api.models.CPCredentials
+import io.cphandheld.vinpoint.api.models.CPInventory
+import io.cphandheld.vinpoint.api.models.CPStatusResponse
+import io.cphandheld.vinpoint.api.request.RequestFactory
+import io.cphandheld.vinpoint.api.singleton.VolleySingleton
 import io.reactivex.Single
 
-/**
-* Created by christian on 11/2/17.
-*
-* (C) CP Handheld Technologies, LLC
-*/
 
 class Inventory(context: Context){
 
     private val queue: VolleySingleton = VolleySingleton.getInstance(context)
 
-    fun search(Credentials: Credentials, idFragment: String, filter: String, statusResponse: StatusResponse? = null): Single<Array<InventoryModel>> {
-
-        var url = queue.buildURL("/v1/Inventory/extendedsearch/$idFragment/${Credentials.orgID}")
-
-        return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, Array<InventoryModel>::class.java, statusResponse)
-
+    fun search(Credentials: CPCredentials, idFragment: String, filter: String, statusResponse: CPStatusResponse? = null): Single<Array<CPInventory>> {
+        val url = queue.buildURL("/v1/Inventory/extendedsearch/$idFragment/${Credentials.orgID}")
+        return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, Array<CPInventory>::class.java, statusResponse)
     }
 
-    fun get(Credentials: Credentials, inventoryID: Int, statusResponse: StatusResponse? = null): Single<InventoryModel> {
-
-        var url = queue.buildURL("/v1/Inventory/$inventoryID")
-
-        return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, InventoryModel::class.java, statusResponse)
-
+    fun get(Credentials: CPCredentials, inventoryID: Int, statusResponse: CPStatusResponse? = null): Single<CPInventory> {
+        val url = queue.buildURL("/v1/Inventory/$inventoryID")
+        return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, CPInventory::class.java, statusResponse)
     }
-
 }
