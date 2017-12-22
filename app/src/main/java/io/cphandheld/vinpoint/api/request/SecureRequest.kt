@@ -10,12 +10,10 @@ import io.reactivex.SingleEmitter
  * (C) CP Handheld Technologies, LLC
  */
 
-class SecureRequest<T>(credentials: CPCredentials, method: Int, url: String, jsonRequest: Any?, responseType: Class<T>,
+class SecureRequest<T>(private val credentials: CPCredentials, method: Int, url: String, jsonRequest: Any?, responseType: Class<T>,
                        subscriber: SingleEmitter<T>, statusResponse: CPStatusResponse? = null)
 
-    : Request<T>(method, url, jsonRequest, responseType, subscriber, statusResponse) {
-
-    private val credentials = credentials
+    :Request<T>(method, url, jsonRequest, responseType, subscriber, statusResponse) {
 
     //Set Headers
     override fun getHeaders(): MutableMap<String, String> {

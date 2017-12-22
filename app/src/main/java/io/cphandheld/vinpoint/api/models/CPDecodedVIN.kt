@@ -4,7 +4,7 @@ import io.realm.RealmObject
 import io.realm.annotations.Ignore
 
 
-class CPDecodedVIN : RealmObject() {
+open class CPDecodedVIN : RealmObject() {
 
     @Ignore // Ignore this when adding this object to the database
     var Year: Number? = null

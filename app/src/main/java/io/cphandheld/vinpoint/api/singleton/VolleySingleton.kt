@@ -33,8 +33,8 @@ class VolleySingleton private constructor(context: Context) {
         protectedRequestQueue.add(request)
     }
 
-    fun buildURL(fragment: String): String {
-        return baseURL + fragment
+    fun buildURL(URLfragment: String): String {
+        return baseURL + URLfragment
     }
 
     fun setURL(url: String) {

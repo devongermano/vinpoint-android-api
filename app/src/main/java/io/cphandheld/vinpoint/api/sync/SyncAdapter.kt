@@ -7,35 +7,33 @@ import io.cphandheld.vinpoint.api.hasActiveInternetConnection
 import io.cphandheld.vinpoint.api.models.CPDecodedVIN
 import io.reactivex.Single
 import io.cphandheld.vinpoint.api.models.CPCredentials
-import io.cphandheld.vinpoint.api.models.InventoryModel
+import io.cphandheld.vinpoint.api.models.CPInventory
 import io.cphandheld.vinpoint.api.request.RequestFactory
 import io.realm.Realm
 import io.realm.kotlin.where
 
-/**
- * Created by gencarnacion on 12/5/17.
- */
+
 class SyncAdapter constructor(context: Context) : SyncInterface {
 
     private val queue: VolleySingleton = VolleySingleton.getInstance(context)
     var mContext: Context = context
 
-    override fun getInventory(Credentials: CPCredentials, vin: String, dealershipId: String) : Single<InventoryModel> {
+    override fun getInventory(Credentials: CPCredentials, vin: String, dealershipId: String) : Single<CPInventory> {
 
         var url = queue.buildURL("/v1/Scanner/VerifyVehicle/$vin/DealershipId/$dealershipId/OrganizationId/${Credentials.orgID}")
 
-        var inventory: Single<InventoryModel>
+        var inventory: Single<CPInventory>
 
         // check internet connection
         // If no internet, check local (uses SyncAdapter)
         if (hasActiveInternetConnection(mContext)) {
 
             // verify vehicle call
-            inventory = RequestFactory.getSecureSingle(Credentials, queue, Request.Method.GET, url, null, InventoryModel::class.java)
+            inventory = RequestFactory.getSecureSingle(Credentials, queue, Request.Method.GET, url, null, CPInventory::class.java)
         } else {
             // get from local cache
             inventory = Realm.getDefaultInstance().use {
-                it.where<InventoryModel>().equalTo("vin", vin).findFirst() as Single<InventoryModel>
+                it.where<CPInventory>().equalTo("vin", vin).findFirst() as Single<CPInventory>
             }
 
             if (inventory == null) {

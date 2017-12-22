@@ -1,34 +1,35 @@
 package io.cphandheld.vinpoint.api.models
 
+import io.realm.RealmList
 import io.realm.RealmObject
 
 
-class CPInventory : RealmObject() {
+open class CPInventory : RealmObject() {
 
     var DealershipName: String? = null
     var LocationName: String? = null
-    var Status: Number? = null;
-    var Journal: Any? = null
-    var JournalVehicle: Any? = null
-    var Tags: Array<CPTag>? = null
-    var InventoryId: Number? = null
+    var Status: Int? = null
+//    var Journal: RealmList<CPJournal>? = null
+//    var JournalVehicle: Any? = null
+    var Tags: RealmList<CPTag>? = null
+    var InventoryId: Int? = null
     var InventoryStatus: String? = null
-    var VehicleId: Number? = null
-    var OrganizationId: Number? = null
-    var DealershipId: Number? = null
-    var LocationId: Number? = null
+    var VehicleId: Int? = null
+    var OrganizationId: Int? = null
+    var DealershipId: Int? = null
+    var LocationId: Int? = null
     var VIN: String? = null
-    var Year: Number? = null
+    var Year: Int? = null
     var Make: String? = null
     var Model: String? = null
     var Stock: String? = null
     var Color: String? = null
-    var Mileage: Number? = null
-    var Cost: Number? = null
-    var Price: Number? = null
+    var Mileage: Int? = null
+    var Cost: Int? = null
+    var Price: Int? = null
     var Classification: String? = null
-    var Latitude: Number? = null
-    var Longitude: Number? = null
+    var Latitude: Double? = null
+    var Longitude: Double? = null
     var CreatedDate: String? = null
     var ScannedDate: String? = null
     var DeletedDate: String? = null
@@ -36,4 +37,3 @@ class CPInventory : RealmObject() {
     var DeletedReason: String? = null
     var ActivatedReason: String? = null
 }
-

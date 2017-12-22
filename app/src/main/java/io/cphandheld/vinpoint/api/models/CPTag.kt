@@ -1,13 +1,15 @@
 package io.cphandheld.vinpoint.api.models
 
+import io.realm.RealmObject
 
-class CPTag {
 
-    var RecordId: Number? = null
-    var TagDefinitionId: Number? = null
-    var InventoryId: Number? = null
+open class CPTag: RealmObject() {
+
+    var RecordId: Int? = null
+    var TagDefinitionId: Int? = null
+    var InventoryId: Int? = null
     var Color: String? = null
     var Label: String? = null
-    var Status: Number? = null
-    var OrganizationId: Number? = null
+    var Status: Int? = null
+    var OrganizationId: Int? = null
 }

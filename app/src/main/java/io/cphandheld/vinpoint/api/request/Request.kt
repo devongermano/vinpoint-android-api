@@ -1,6 +1,5 @@
 package io.cphandheld.vinpoint.api.request
 
-import android.util.Log
 import com.android.volley.NetworkResponse
 import com.android.volley.Response
 import com.android.volley.VolleyError
@@ -26,9 +25,8 @@ open class Request<T>(method: Int, url: String, jsonRequest: Any?,
             subscriber.onSuccess(result)
 
         },
-        Response.ErrorListener { error ->
-            Log.e("Error", error.toString())
-            subscriber.onError(error)
+        Response.ErrorListener { volleyError ->
+            subscriber.onError(volleyError)
         }) {
 
     private val body: String = Gson().toJson(jsonRequest)

@@ -1,6 +1,7 @@
 package io.cphandheld.vinpoint.api
 
 import android.content.Context
+import android.net.Credentials
 import com.android.volley.Request.Method.GET
 import io.cphandheld.vinpoint.api.models.CPCredentials
 import io.cphandheld.vinpoint.api.models.CPInventory
@@ -22,5 +23,10 @@ class Inventory(context: Context){
     fun get(Credentials: CPCredentials, inventoryID: Int, statusResponse: CPStatusResponse? = null): Single<CPInventory> {
         val url = queue.buildURL("/v1/Inventory/$inventoryID")
         return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, CPInventory::class.java, statusResponse)
+    }
+
+    fun getInventory(Credentials: CPCredentials, statusResponse: CPStatusResponse? = null): Single<Array<CPInventory>> {
+        val url = queue.buildURL("/v1/Inventory/byorg/${Credentials.orgID}")
+        return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, Array<CPInventory>::class.java, statusResponse)
     }
 }

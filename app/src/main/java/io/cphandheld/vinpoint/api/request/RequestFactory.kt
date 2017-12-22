@@ -11,7 +11,7 @@ import io.reactivex.Single
 * (C) CP Handheld Technologies, LLC
 */
 
-class RequestFactory{
+class RequestFactory {
 
     companion object {
         fun <T> getSecureSingle(credentials: CPCredentials, queue: VolleySingleton, method: Int, url: String, jsonRequest: Any?,
