@@ -31,13 +31,13 @@ class SyncAdapter constructor(context: Context) : SyncInterface {
             // verify vehicle call
             inventory = RequestFactory.getSecureSingle(Credentials, queue, Request.Method.GET, url, null, CPInventory::class.java)
         } else {
-            // get from local cache
+            // getInventoryItem from local cache
             inventory = Realm.getDefaultInstance().use {
                 it.where<CPInventory>().equalTo("vin", vin).findFirst() as Single<CPInventory>
             }
 
             if (inventory == null) {
-                // get data from Stacey db
+                // getInventoryItem data from Stacey db
                 // this will only have vin, year, make, and model
                 var decodedVIN = Realm.getDefaultInstance().use {
                     it.where<CPDecodedVIN>().equalTo("vin", vin.substring(0, 7)).findFirst() as Single<CPDecodedVIN>

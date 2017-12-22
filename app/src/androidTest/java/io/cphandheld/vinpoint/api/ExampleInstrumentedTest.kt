@@ -71,7 +71,7 @@ class ExampleInstrumentedTest {
     @Test
     fun getsInventory() {
         var statusResponse = CPStatusResponse()
-        var sub = Inventory(appContext).get(cred, 1234, statusResponse)
+        var sub = Inventory(appContext).getInventoryItem(cred, 1234, statusResponse)
         var result = sub.waitForTest()
         assertEquals("1FTBF2A69GEC79810", result!!.VIN)
         assertEquals(200,statusResponse.statusCode)

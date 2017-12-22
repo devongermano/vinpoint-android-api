@@ -3,6 +3,7 @@ package io.cphandheld.vinpoint.api.testing
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.widget.TextView
 import com.android.volley.VolleyError
 import io.cphandheld.vinpoint.api.Inventory
 import io.cphandheld.vinpoint.api.R
@@ -12,6 +13,12 @@ import kotlinx.android.synthetic.main.activity_testing.*
 
 class TestingActivity : AppCompatActivity() {
 
+    // Environment Specific
+    val username = "test@test.com"
+    val password = "Password1"
+    val orgId = 1
+
+    // Local
     val testPass = "PASS"
     val testFail = "FAIL"
 
@@ -25,33 +32,41 @@ class TestingActivity : AppCompatActivity() {
 
     private fun testLogin() {
         val security = Security(applicationContext)
-       security.login(0, "test@test.com", "Password1")
+       security.login(username, password)
         .subscribe({ response ->
-            textView_auth0login_stat.text = testPass
-            textView_auth0login_stat.setTextColor(resources.getColor(R.color.green))
 
-            credentials = CPCredentials(response.access_token!!, 0)
+            updateTestUiResult(textView_auth0login_stat, true)
 
-            testGetInventoryItem()
+            val credentials = CPCredentials(response.id_token!!, orgId)
+            testGetNetworkInventory(credentials)
 
         }, { error ->
             val volleyError = error as VolleyError
-            Log.e("Response Code: ", volleyError.networkResponse.statusCode.toString())
-            textView_auth0login_stat.text = testFail
-            textView_auth0login_stat.setTextColor(resources.getColor(R.color.red))
+            Log.e("Response Error", volleyError.networkResponse.statusCode.toString())
+            updateTestUiResult(textView_auth0login_stat, false)
         })
     }
 
-    private fun testGetInventoryItem() {
+    private fun testGetNetworkInventory(credentials: CPCredentials) {
         val inventory = Inventory(applicationContext)
-        inventory.getInventory(credentials!!)
+        inventory.getInventory(credentials)
                 .subscribe({ response ->
-                    textView_scan_stat.text = testPass
-                    textView_scan_stat.setTextColor(resources.getColor(R.color.green))
+                    Log.d("Response", response.toString())
+                    updateTestUiResult(textView_get_inventory_stat, true)
                 }, { error ->
-                    textView_scan_stat.text = testFail
-                    textView_scan_stat.setTextColor(resources.getColor(R.color.red))
+                    val volleyError = error as VolleyError
+                    Log.e("Response Error", volleyError.networkResponse.statusCode.toString())
+                    updateTestUiResult(textView_get_inventory_stat, false)
                 })
     }
 
+    private fun updateTestUiResult(textView: TextView, testPassed: Boolean) {
+        if(!testPassed) {
+            textView.text = testFail
+            textView.setTextColor(resources.getColor(R.color.red))
+        } else {
+            textView.text = testPass
+            textView.setTextColor(resources.getColor(R.color.green))
+        }
+    }
 }
