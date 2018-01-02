@@ -1,7 +1,7 @@
 package io.cphandheld.vinpoint.api
 
 import android.content.Context
-import com.android.volley.Request.Method.GET
+import com.android.volley.Request.Method.*
 import io.cphandheld.vinpoint.api.models.CPCredentials
 import io.cphandheld.vinpoint.api.models.CPInventory
 import io.cphandheld.vinpoint.api.models.CPStatusResponse
@@ -10,7 +10,7 @@ import io.cphandheld.vinpoint.api.singleton.VolleySingleton
 import io.reactivex.Single
 
 
-class Inventory(context: Context){
+class Inventory(context: Context) {
 
     private val queue: VolleySingleton = VolleySingleton.getInstance(context)
 
@@ -27,5 +27,15 @@ class Inventory(context: Context){
     fun getInventoryItem(Credentials: CPCredentials, inventoryID: Int, statusResponse: CPStatusResponse? = null): Single<CPInventory> {
         val url = queue.buildURL("/v1/Inventory/$inventoryID")
         return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, CPInventory::class.java, statusResponse)
+    }
+
+    fun postInventoryItem(Credentials: CPCredentials, jsonRequest: Any, statusResponse: CPStatusResponse? = null): Single<CPInventory> {
+        val url = queue.buildURL("/v1/Inventory")
+        return RequestFactory.getSecureSingle(Credentials, queue, POST, url, jsonRequest, CPInventory::class.java, statusResponse)
+    }
+
+    fun putInventoryItem(Credentials: CPCredentials, inventoryID: Int, jsonRequest: Any, statusResponse: CPStatusResponse? = null): Single<CPInventory> {
+        val url = queue.buildURL("/v1/Inventory/$inventoryID")
+        return RequestFactory.getSecureSingle(Credentials, queue, PUT, url, jsonRequest, CPInventory::class.java, statusResponse)
     }
 }

@@ -90,7 +90,7 @@ class ExampleInstrumentedTest {
     fun verifyVehicle() {
         var statusResponse = CPStatusResponse()
 
-//        var sub = Scanner(appContext).scan(cred, "2G1WF52E939195923", "1", syncInterface, statusResponse)
+//        var sub = Scan(appContext).scan(cred, "2G1WF52E939195923", "1", syncInterface, statusResponse)
 //        var result = sub.waitForTest()
         //assertEquals(18, result!!.size)
         assertEquals(200,statusResponse.statusCode)
