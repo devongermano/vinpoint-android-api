@@ -15,18 +15,17 @@ class Security(context: Context) {
 
     fun login(username: String, password: String): Single<CPSecurity> {
 
-        val url = "https://cpht.auth0.com/oauth/ro"
+        val url: String = VinpointAPI.Environment.Auth0Endpoint!!
 
         val request = CPSecurityRequest()
 
         request.username = username
         request.password = password
-        request.client_id = "ZewaRueG57rtsjl6n6FZgXE0yHk4wInS"
+        request.client_id = VinpointAPI.Environment.Auth0ClientID
         request.connection = "Username-Password-Authentication"
         request.scope = "openid roles uid"
         request.grant_type = "password"
 
         return RequestFactory.getSingle(queue, POST, url, request, CPSecurity::class.java)
     }
-
 }

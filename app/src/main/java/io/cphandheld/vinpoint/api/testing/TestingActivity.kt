@@ -5,13 +5,13 @@ import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
 import io.cphandheld.vinpoint.api.*
 import io.cphandheld.vinpoint.api.models.CPCredentials
+import io.cphandheld.vinpoint.api.models.CPEnvironment
 import io.cphandheld.vinpoint.api.models.CPInventory
 import kotlinx.android.synthetic.main.activity_testing.*
 
 
 class TestingActivity : AppCompatActivity() {
 
-    // Environment Specific
     val username = "test@test.com"
     val password = "Password1"
     val orgId = 1
@@ -37,6 +37,16 @@ class TestingActivity : AppCompatActivity() {
 
 
     private fun testLogin() {
+
+        val environment = CPEnvironment()
+        environment.APIEndpoint = "https://orion.cpht.io/unison-api"
+        environment.PrinterAPIEndpoint = "https://orion.cpht.io/printer-api"
+        environment.ScannerAPIEndpoint = "https://orion.cpht.io/scanner-api"
+        environment.Auth0ClientID = "ZewaRueG57rtsjl6n6FZgXE0yHk4wInS"
+        environment.Auth0Endpoint = "https://cpht.auth0.com/oauth/ro"
+
+        VinpointAPI.Environment = environment
+
         inventoryInstance = Inventory(applicationContext)
         dealershipInstance = Dealership(applicationContext)
         printerInstance = Printer(applicationContext)

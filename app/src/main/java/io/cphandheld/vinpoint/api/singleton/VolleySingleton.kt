@@ -4,15 +4,17 @@ import android.content.Context
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.Volley
+import io.cphandheld.vinpoint.api.VinpointAPI
 
 
 class VolleySingleton private constructor(context: Context) {
 
     private var currentRequestQueue: RequestQueue? = null
-    private var baseURL: String? = "https://orion.cpht.io/unison-api"
+    private var baseURL: String? = VinpointAPI.Environment.APIEndpoint
+    //private var baseURL: String? = "https://orion.cpht.io/unison-api"
 
-    //Protected Request Queue allows functions, ie addToRequestQueue, to be safe from
-    //null pointer errors from unwrapping the optional currentRequestQueue
+    /* Protected Request Queue allows functions, ie addToRequestQueue, to be safe from
+    null pointer errors from unwrapping the optional currentRequestQueue */
     private val protectedRequestQueue: RequestQueue
         get() {
             if (currentRequestQueue == null) {
@@ -22,26 +24,14 @@ class VolleySingleton private constructor(context: Context) {
         }
 
     init {
-        // Specify the application context
-        currentContext = context
-        // Get the request queue
-        currentRequestQueue = protectedRequestQueue
+        currentContext = context  //Specify the application context
+        currentRequestQueue = protectedRequestQueue  //Get the request queue
     }
 
     fun <T> addToRequestQueue(request: Request<T>) {
-        // Add the specified request to the request queue
-        protectedRequestQueue.add(request)
+        protectedRequestQueue.add(request)  //Add the specified request to the request queue
     }
 
-    fun buildURL(URLfragment: String): String {
-        return baseURL + URLfragment
-    }
-
-    fun setURL(url: String) {
-        baseURL = url
-    }
-
-    //Singleton Instance
     companion object {
 
         private var currentInstance: VolleySingleton? = null
@@ -49,12 +39,10 @@ class VolleySingleton private constructor(context: Context) {
 
         @Synchronized
         fun getInstance(context: Context): VolleySingleton {
-            // If currentInstance is null then initialize new instance of self
-            if (currentInstance == null) {
+            if (currentInstance == null) {  // If currentInstance is null then initialize new instance of self
                 currentInstance = VolleySingleton(context)
             }
-            // Return VolleySingleton current instance
-            return currentInstance!!
+            return currentInstance!!  //Return VolleySingleton current instance
         }
     }
 }

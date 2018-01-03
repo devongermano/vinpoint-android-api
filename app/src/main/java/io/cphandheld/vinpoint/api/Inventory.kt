@@ -13,29 +13,31 @@ import io.reactivex.Single
 class Inventory(context: Context) {
 
     private val queue: VolleySingleton = VolleySingleton.getInstance(context)
+    private val endpoint: String? = VinpointAPI.Environment.APIEndpoint
+
 
     fun search(Credentials: CPCredentials, idFragment: String, filter: String, statusResponse: CPStatusResponse? = null): Single<Array<CPInventory>> {
-        val url = queue.buildURL("/v1/Inventory/extendedsearch/$idFragment/${Credentials.orgID}")
+        val url = "$endpoint/v1/Inventory/extendedsearch/$idFragment/${Credentials.orgID}"
         return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, Array<CPInventory>::class.java, statusResponse)
     }
 
     fun getInventory(Credentials: CPCredentials, statusResponse: CPStatusResponse? = null): Single<Array<CPInventory>> {
-        val url = queue.buildURL("/v1/Inventory/ByOrg/${Credentials.orgID}")
+        val url = "$endpoint/v1/Inventory/ByOrg/${Credentials.orgID}"
         return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, Array<CPInventory>::class.java, statusResponse)
     }
 
     fun getInventoryItem(Credentials: CPCredentials, inventoryID: Int, statusResponse: CPStatusResponse? = null): Single<CPInventory> {
-        val url = queue.buildURL("/v1/Inventory/$inventoryID")
+        val url = "$endpoint/v1/Inventory/$inventoryID"
         return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, CPInventory::class.java, statusResponse)
     }
 
     fun postInventoryItem(Credentials: CPCredentials, jsonRequest: Any, statusResponse: CPStatusResponse? = null): Single<CPInventory> {
-        val url = queue.buildURL("/v1/Inventory")
+        val url = "$endpoint/v1/Inventory"
         return RequestFactory.getSecureSingle(Credentials, queue, POST, url, jsonRequest, CPInventory::class.java, statusResponse)
     }
 
     fun putInventoryItem(Credentials: CPCredentials, inventoryID: Int, jsonRequest: Any, statusResponse: CPStatusResponse? = null): Single<CPInventory> {
-        val url = queue.buildURL("/v1/Inventory/$inventoryID")
+        val url = "$endpoint/v1/Inventory/$inventoryID"
         return RequestFactory.getSecureSingle(Credentials, queue, PUT, url, jsonRequest, CPInventory::class.java, statusResponse)
     }
 }

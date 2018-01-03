@@ -13,9 +13,10 @@ import io.reactivex.Single
 class Dealership(context: Context) {
 
     private val queue: VolleySingleton = VolleySingleton.getInstance(context)
+    private val endpoint: String? = VinpointAPI.Environment.APIEndpoint
 
     fun getDealership(Credentials: CPCredentials, dealershipID: Int, statusResponse: CPStatusResponse? = null): Single<CPDealership> {
-        val url = queue.buildURL("/v1/Dealerships/$dealershipID")
+        val url = "$endpoint/v1/Dealerships/$dealershipID"
         return RequestFactory.getSecureSingle(Credentials, queue, Request.Method.GET, url, null, CPDealership::class.java, statusResponse)
     }
 }
