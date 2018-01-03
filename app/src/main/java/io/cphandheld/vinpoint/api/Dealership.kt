@@ -5,8 +5,8 @@ import com.android.volley.Request
 import io.cphandheld.vinpoint.api.models.CPCredentials
 import io.cphandheld.vinpoint.api.models.CPDealership
 import io.cphandheld.vinpoint.api.models.CPStatusResponse
-import io.cphandheld.vinpoint.api.request.RequestFactory
-import io.cphandheld.vinpoint.api.singleton.VolleySingleton
+import io.cphandheld.vinpoint.api.utility.RequestFactory
+import io.cphandheld.vinpoint.api.utility.VolleySingleton
 import io.reactivex.Single
 
 

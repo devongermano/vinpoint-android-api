@@ -1,7 +1,6 @@
-package io.cphandheld.vinpoint.api.request
+package io.cphandheld.vinpoint.api.utility
 
 import io.cphandheld.vinpoint.api.models.CPCredentials
-import io.cphandheld.vinpoint.api.singleton.VolleySingleton
 import io.cphandheld.vinpoint.api.models.CPStatusResponse
 import io.reactivex.Single
 

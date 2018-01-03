@@ -1,4 +1,4 @@
-package io.cphandheld.vinpoint.api.request
+package io.cphandheld.vinpoint.api.utility
 
 import com.android.volley.NetworkResponse
 import com.android.volley.Response
@@ -6,7 +6,6 @@ import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import io.cphandheld.vinpoint.api.GsonDataDeserializer
 import io.cphandheld.vinpoint.api.models.CPStatusResponse
 import io.reactivex.SingleEmitter
 import org.json.JSONObject

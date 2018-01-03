@@ -1,4 +1,4 @@
-package io.cphandheld.vinpoint.api
+package io.cphandheld.vinpoint.api.utility
 
 import com.google.gson.Gson
 import com.google.gson.JsonDeserializationContext

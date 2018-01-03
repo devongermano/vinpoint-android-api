@@ -1,4 +1,4 @@
-package io.cphandheld.vinpoint.api.singleton
+package io.cphandheld.vinpoint.api.utility
 
 import android.content.Context
 import com.android.volley.Request

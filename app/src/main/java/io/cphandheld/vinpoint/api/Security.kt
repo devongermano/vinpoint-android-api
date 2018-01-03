@@ -4,8 +4,8 @@ import android.content.Context
 import com.android.volley.Request.Method.POST
 import io.cphandheld.vinpoint.api.models.CPSecurity
 import io.cphandheld.vinpoint.api.models.CPSecurityRequest
-import io.cphandheld.vinpoint.api.request.RequestFactory
-import io.cphandheld.vinpoint.api.singleton.VolleySingleton
+import io.cphandheld.vinpoint.api.utility.RequestFactory
+import io.cphandheld.vinpoint.api.utility.VolleySingleton
 import io.reactivex.Single
 
 
