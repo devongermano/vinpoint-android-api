@@ -1,5 +1,6 @@
 package io.cphandheld.vinpoint.api.models
 
+
 open class CPEnvironment {
 
     var APIEndpoint: String? = null

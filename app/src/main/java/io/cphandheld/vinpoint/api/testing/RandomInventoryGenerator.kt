@@ -1,34 +1,42 @@
 package io.cphandheld.vinpoint.api.testing
 
+import android.content.Context
+import com.android.volley.Request
 import io.cphandheld.vinpoint.api.models.CPInventory
+import io.cphandheld.vinpoint.api.models.CPOrganization
+import io.cphandheld.vinpoint.api.models.CPStatusResponse
+import io.cphandheld.vinpoint.api.models.CPTestVIN
+import io.cphandheld.vinpoint.api.utility.RequestFactory
+import io.cphandheld.vinpoint.api.utility.VolleySingleton
+import io.reactivex.Single
 import java.util.*
 
-/**
- * Created by Devon on 1/2/18.
- */
 
-class RandomInventoryGenerator {
+class RandomInventoryGenerator(context: Context) {
 
-    var inventory: CPInventory? = null
+    private val queue: VolleySingleton = VolleySingleton.getInstance(context)
+
 
     private val colors = arrayOf("RED", "GREEN", "BLUE", "ORANGE", "VIOLET", "WHITE", "GREY", "BLACK")
     private val makes = arrayOf("PONTIAC", "FORD", "CHEVROLET")
     private val models = arrayOf("SHITSTER", "LEMONWEDGE", "DOILEY")
 
 
-    init {
+    fun generateRandomVehicle(): Single<CPInventory> {
 
         val inventory = CPInventory()
 
-        inventory.VIN = generateRandomAlphaNumeric(17)
         inventory.Stock = generateRandomAlphaNumeric(8)
         inventory.Color = generateRandomColor()
         inventory.Make = generateRandomMake()
         inventory.Model = generateRandomModel()
 
-        this.inventory = inventory
-    }
+        return generateRandomVin().map({ x: CPTestVIN ->
+            inventory.VIN = x.vin
+            return@map inventory // WTF
+        })
 
+    }
 
     fun generateRandomColor(): String {
         val colorRnd = Random().nextInt(colors.count())
@@ -55,6 +63,11 @@ class RandomInventoryGenerator {
             sb.append(candidateChars[random.nextInt(candidateChars.length)])
         }
         return sb.toString()
+    }
+
+    fun generateRandomVin(): Single<CPTestVIN> {
+        val url = "http://randomvin.com/getvin.php?type=real"
+        return RequestFactory.getSingle(queue, Request.Method.GET, url, null, CPTestVIN::class.java)
     }
 
 }

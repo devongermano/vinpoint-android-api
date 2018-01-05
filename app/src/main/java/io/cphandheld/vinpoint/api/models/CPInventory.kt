@@ -4,14 +4,14 @@ import io.realm.RealmList
 import io.realm.RealmObject
 
 
-open class CPInventory : RealmObject() {
+open class CPInventory {
 
     var DealershipName: String? = null
     var LocationName: String? = null
     var Status: Int? = null
 //    var Journal: RealmList<CPJournal>? = null
 //    var JournalVehicle: Any? = null
-    var Tags: RealmList<CPTag>? = null
+    var Tags: List<CPTag>? = null
     var InventoryId: Int? = null
     var InventoryStatus: String? = null
     var VehicleId: Int? = null

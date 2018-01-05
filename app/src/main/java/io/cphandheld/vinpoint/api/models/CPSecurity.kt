@@ -1,5 +1,6 @@
 package io.cphandheld.vinpoint.api.models
 
+
 class CPSecurity {
 
     var id_token: String? = null

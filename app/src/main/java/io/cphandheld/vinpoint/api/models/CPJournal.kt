@@ -7,7 +7,7 @@ open class CPJournal {
     var CreatedUserName: String? = null
     var CreatedDate: String? = null
     var Note: String? = null
-    var Data: String? = null
+    var Data: Any? = null
     var Class: String? = null
     var SubClass: String? = null
     var MillisSinceEpoch: Long? = null

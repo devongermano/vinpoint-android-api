@@ -2,6 +2,7 @@ package io.cphandheld.vinpoint.api.testing
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.TextView
 import io.cphandheld.vinpoint.api.*
 import io.cphandheld.vinpoint.api.models.CPCredentials
@@ -24,6 +25,7 @@ class TestingActivity : AppCompatActivity() {
     var dealershipInstance: Dealership? = null
     var printerInstance: Printer? = null
     var organizationInstance: Organization? = null
+    var journalInstance: Journal? = null
 
     var credentials: CPCredentials? = null
     var inventory: Array<CPInventory>? = null
@@ -51,6 +53,7 @@ class TestingActivity : AppCompatActivity() {
         dealershipInstance = Dealership(applicationContext)
         printerInstance = Printer(applicationContext)
         organizationInstance = Organization(applicationContext)
+        journalInstance = Journal(applicationContext)
 
         val security = Security(applicationContext)
        security.login(username, password)
@@ -73,10 +76,12 @@ class TestingActivity : AppCompatActivity() {
                     updateTestUiResult(textView_get_network_inventory_stat, true)
 
                     this.inventory = response
+
                     testGetNetworkInventoryItem()
 
                 }, { error ->
                     updateTestUiResult(textView_get_network_inventory_stat, false)
+                    testGetNetworkInventoryItem()
                 })
     }
 
@@ -87,29 +92,25 @@ class TestingActivity : AppCompatActivity() {
         inventoryInstance!!.getInventoryItem(credentials!!, inventoryItem!!)
                 .subscribe({ response ->
                     updateTestUiResult(textView_get_network_inventory_item_stat, true)
-                    testPutNetworkInventoryItem()
+                    testPostNetworkInventoryItem()
                 }, { error ->
                     updateTestUiResult(textView_get_network_inventory_item_stat, false)
+                    testPostNetworkInventoryItem()
                 })
     }
 
     private fun testPostNetworkInventoryItem() {
 
-        val inventoryItem = RandomInventoryGenerator().inventory
+        updateTestUiResult(textView_post_network_inventory_item_stat, false)
+        testPutNetworkInventoryItem()
 
-        inventoryInstance!!.postInventoryItem(credentials!!, inventoryItem as Any)
-                .subscribe({ response ->
-                    updateTestUiResult(textView_post_network_inventory_item_stat, true)
-                }, { error ->
-                    updateTestUiResult(textView_post_network_inventory_item_stat, false)
-                })
     }
 
     private fun testPutNetworkInventoryItem() {
 
         val inventoryItem = this.inventory!![0]
 
-        inventoryItem.Color = "Blurple"
+        inventoryItem.Color = RandomInventoryGenerator(applicationContext).generateRandomColor()
 
         inventoryInstance!!.postInventoryItem(credentials!!, inventoryItem)
                 .subscribe({ response ->
@@ -117,6 +118,7 @@ class TestingActivity : AppCompatActivity() {
                     testGetNetworkDealership()
                 }, { error ->
                     updateTestUiResult(textView_put_network_inventory_item_stat, false)
+                    testGetNetworkDealership()
                 })
     }
 
@@ -130,6 +132,7 @@ class TestingActivity : AppCompatActivity() {
                     testGetNetworkPrinters()
                 }, { error ->
                     updateTestUiResult(textView_get_network_dealership_stat, false)
+                    testGetNetworkPrinters()
                 })
     }
 
@@ -142,16 +145,29 @@ class TestingActivity : AppCompatActivity() {
                     testGetOrganizations()
                 }, { error ->
                     updateTestUiResult(textView_get_printers_stat, false)
+                    testGetOrganizations()
                 })
     }
 
     private fun testGetOrganizations() {
 
-        organizationInstance!!.getOrganizations(credentials!!)
+        organizationInstance!!.getOrganizationsByUserId(credentials!!)
                 .subscribe({ response ->
                     updateTestUiResult(textView_get_organizations_stat, true)
+                    testGetJournal()
                 }, { error ->
                     updateTestUiResult(textView_get_organizations_stat, false)
+                    testGetJournal()
+                })
+    }
+
+    private fun testGetJournal() {
+
+        journalInstance!!.getVinpointJournal(credentials!!, this.inventory!![0].InventoryId!!)
+                .subscribe({ response ->
+                    updateTestUiResult(textView_get_journal_stat, true)
+                }, { error ->
+                    updateTestUiResult(textView_get_journal_stat, false)
                 })
     }
 

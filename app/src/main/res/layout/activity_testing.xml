@@ -235,6 +235,55 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView_header_organization"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="ORGANIZATION"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView_get_organizations"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Get Network Organizations" />
+
+                <TextView
+                    android:id="@+id/textView_get_organizations_stat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="result"
+                    android:textAlignment="textEnd"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginBottom="1dp"
             android:background="@android:color/white"
             android:orientation="vertical"
@@ -297,11 +346,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView_header_organization"
+                    android:id="@+id/textView_header_journal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="ORGANIZATION"
+                    android:text="JOURNAL"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -313,14 +362,14 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView_get_organizations"
+                    android:id="@+id/textView_get_journal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Get Network Organizations" />
+                    android:text="Get Network Journal" />
 
                 <TextView
-                    android:id="@+id/textView_get_organizations_stat"
+                    android:id="@+id/textView_get_journal_stat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

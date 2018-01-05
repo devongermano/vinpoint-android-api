@@ -13,31 +13,30 @@ import io.reactivex.Single
 class Inventory(context: Context) {
 
     private val queue: VolleySingleton = VolleySingleton.getInstance(context)
-    private val endpoint: String? = VinpointAPI.Environment.APIEndpoint
+    private val vinpointEndpoint: String? = VinpointAPI.Environment.APIEndpoint
 
-
-    fun search(Credentials: CPCredentials, idFragment: String, filter: String, statusResponse: CPStatusResponse? = null): Single<Array<CPInventory>> {
-        val url = "$endpoint/v1/Inventory/extendedsearch/$idFragment/${Credentials.orgID}"
-        return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, Array<CPInventory>::class.java, statusResponse)
+    fun search(credentials: CPCredentials, idFragment: String, filter: String, statusResponse: CPStatusResponse? = null): Single<Array<CPInventory>> {
+        val url = "$vinpointEndpoint/v1/Inventory/extendedsearch/$idFragment/${credentials.orgID}"
+        return RequestFactory.getSecureSingle(credentials, queue, GET, url, null, Array<CPInventory>::class.java, statusResponse)
     }
 
-    fun getInventory(Credentials: CPCredentials, statusResponse: CPStatusResponse? = null): Single<Array<CPInventory>> {
-        val url = "$endpoint/v1/Inventory/ByOrg/${Credentials.orgID}"
-        return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, Array<CPInventory>::class.java, statusResponse)
+    fun getInventory(credentials: CPCredentials, statusResponse: CPStatusResponse? = null): Single<Array<CPInventory>> {
+        val url = "$vinpointEndpoint/v1/Inventory/ByOrg/${credentials.orgID}"
+        return RequestFactory.getSecureSingle(credentials, queue, GET, url, null, Array<CPInventory>::class.java, statusResponse)
     }
 
-    fun getInventoryItem(Credentials: CPCredentials, inventoryID: Int, statusResponse: CPStatusResponse? = null): Single<CPInventory> {
-        val url = "$endpoint/v1/Inventory/$inventoryID"
-        return RequestFactory.getSecureSingle(Credentials, queue, GET, url, null, CPInventory::class.java, statusResponse)
+    fun getInventoryItem(credentials: CPCredentials, inventoryID: Int, statusResponse: CPStatusResponse? = null): Single<CPInventory> {
+        val url = "$vinpointEndpoint/v1/Inventory/$inventoryID"
+        return RequestFactory.getSecureSingle(credentials, queue, GET, url, null, CPInventory::class.java, statusResponse)
     }
 
-    fun postInventoryItem(Credentials: CPCredentials, jsonRequest: Any, statusResponse: CPStatusResponse? = null): Single<CPInventory> {
-        val url = "$endpoint/v1/Inventory"
-        return RequestFactory.getSecureSingle(Credentials, queue, POST, url, jsonRequest, CPInventory::class.java, statusResponse)
+    fun postInventoryItem(credentials: CPCredentials, jsonRequest: Any, statusResponse: CPStatusResponse? = null): Single<Unit> {
+        val url = "$vinpointEndpoint/v1/Inventory"
+        return RequestFactory.getSecureSingle(credentials, queue, POST, url, jsonRequest, Unit::class.java, statusResponse)
     }
 
-    fun putInventoryItem(Credentials: CPCredentials, inventoryID: Int, jsonRequest: Any, statusResponse: CPStatusResponse? = null): Single<CPInventory> {
-        val url = "$endpoint/v1/Inventory/$inventoryID"
-        return RequestFactory.getSecureSingle(Credentials, queue, PUT, url, jsonRequest, CPInventory::class.java, statusResponse)
+    fun putInventoryItem(credentials: CPCredentials, inventoryID: Int, jsonRequest: Any, statusResponse: CPStatusResponse? = null): Single<Unit> {
+        val url = "$vinpointEndpoint/v1/Inventory/$inventoryID"
+        return RequestFactory.getSecureSingle(credentials, queue, PUT, url, jsonRequest, Unit::class.java, statusResponse)
     }
 }
