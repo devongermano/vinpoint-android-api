@@ -1,8 +1,5 @@
 package io.cphandheld.vinpoint.api.models
 
-import io.realm.RealmList
-import io.realm.RealmObject
-
 
 open class CPInventory {
 
