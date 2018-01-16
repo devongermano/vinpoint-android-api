@@ -20,7 +20,7 @@ ext {
     siteUrl = 'https://github.com/devongermano/vinpoint-android-api'
     gitUrl = 'https://github.com/devongermano/vinpoint-android-api.git'
 
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.0.2'
 
     developerId = 'developerId'
     developerName = 'Devon Germano'
