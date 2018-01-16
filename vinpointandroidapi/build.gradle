@@ -8,12 +8,12 @@ apply plugin: 'kotlin-kapt'
 
 
 ext {
-    bintrayRepo = 'vinpoint-android-api'
-    bintrayName = 'vinpoint-android-api'
+    bintrayRepo = 'Vinpoint'
+    bintrayName = 'vinpointandroidapi'
 
-    publishedGroupId = 'com.cphandheld'
-    libraryName = 'vinpoint-android-api'
-    artifact = 'vinpoint-android-api'
+    publishedGroupId = 'io.cphandheld'
+    libraryName = 'vinpointandroidapi'
+    artifact = 'vinpointandroidapi'
 
     libraryDescription = 'A Kotlin implemenation of the Vinpoint API built specifically for Android'
 

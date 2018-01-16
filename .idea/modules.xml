@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/vinpoint-android-api.iml" filepath="$PROJECT_DIR$/vinpoint-android-api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/vinpoint-android-api.iml" filepath="$PROJECT_DIR$/vinpoint-android-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/VinpointAndroidApi.iml" filepath="$PROJECT_DIR$/VinpointAndroidApi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vinpointandroidapi/app.iml" filepath="$PROJECT_DIR$/vinpointandroidapi/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vinpointandroidapi/vinpointandroidapi.iml" filepath="$PROJECT_DIR$/vinpointandroidapi/vinpointandroidapi.iml" />
     </modules>
   </component>
 </project>
