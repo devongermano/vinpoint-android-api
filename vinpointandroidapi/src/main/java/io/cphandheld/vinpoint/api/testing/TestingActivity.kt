@@ -13,6 +13,8 @@ import kotlinx.android.synthetic.main.activity_testing.*
 
 class TestingActivity : AppCompatActivity() {
 
+    val mTag = "TestingActivity"
+
     val username = "test@test.com"
     val password = "Password1"
     val orgId = 1
@@ -21,13 +23,16 @@ class TestingActivity : AppCompatActivity() {
     val testFail = "FAIL"
 
     // Variable
+    var securityInstance: Security? = null
     var inventoryInstance: Inventory? = null
     var dealershipInstance: Dealership? = null
     var printerInstance: Printer? = null
     var organizationInstance: Organization? = null
     var journalInstance: Journal? = null
 
-    var credentials: CPCredentials? = null
+    var vinpointCredentials: CPCredentials? = null
+
+
     var inventory: Array<CPInventory>? = null
 
 
@@ -44,8 +49,9 @@ class TestingActivity : AppCompatActivity() {
         environment.APIEndpoint = "https://orion.cpht.io/unison-api"
         environment.PrinterAPIEndpoint = "https://orion.cpht.io/printer-api"
         environment.ScannerAPIEndpoint = "https://orion.cpht.io/scanner-api"
-        environment.Auth0ClientID = "ZewaRueG57rtsjl6n6FZgXE0yHk4wInS"
+        environment.VinpointAuth0ClientID = "ZewaRueG57rtsjl6n6FZgXE0yHk4wInS"
         environment.Auth0Endpoint = "https://cpht.auth0.com/oauth/ro"
+        environment.ScannerAPIEndpoint = "496priyO44FWmZu5YQ27s6AJDJmQU702"
 
         VinpointAPI.Environment = environment
 
@@ -54,23 +60,36 @@ class TestingActivity : AppCompatActivity() {
         printerInstance = Printer(applicationContext)
         organizationInstance = Organization(applicationContext)
         journalInstance = Journal(applicationContext)
+        securityInstance = Security(applicationContext)
 
-        val security = Security(applicationContext)
-       security.login(username, password)
+       securityInstance!!.login(username, password)
         .subscribe({ response ->
 
             updateTestUiResult(textView_auth0login_stat, true)
 
-            credentials = CPCredentials(response.id_token!!, orgId)
-            testGetNetworkInventory()
+            vinpointCredentials = CPCredentials(response.id_token!!, orgId)
+//            testGetNetworkInventory()
+            testDelegateScannerAPI()
 
         }, { error ->
             updateTestUiResult(textView_auth0login_stat, false)
         })
     }
 
+    private fun testDelegateScannerAPI() {
+        securityInstance!!.delegateScannerAPI(vinpointCredentials!!).subscribe({result ->
+
+            updateTestUiResult(textView_scannerDelegate_stat, true)
+            testGetNetworkInventory()
+
+        }, {error ->
+            updateTestUiResult(textView_scannerDelegate_stat, false)
+            testGetNetworkInventory()
+        })
+    }
+
     private fun testGetNetworkInventory() {
-        inventoryInstance!!.getInventory(credentials!!)
+        inventoryInstance!!.getInventory(vinpointCredentials!!)
                 .subscribe({ response ->
 
                     updateTestUiResult(textView_get_network_inventory_stat, true)
@@ -89,7 +108,7 @@ class TestingActivity : AppCompatActivity() {
 
         val inventoryItem = this.inventory!![0].InventoryId
 
-        inventoryInstance!!.getInventoryItem(credentials!!, inventoryItem!!)
+        inventoryInstance!!.getInventoryItem(vinpointCredentials!!, inventoryItem!!)
                 .subscribe({ response ->
                     updateTestUiResult(textView_get_network_inventory_item_stat, true)
                     testPostNetworkInventoryItem()
@@ -112,7 +131,7 @@ class TestingActivity : AppCompatActivity() {
 
         inventoryItem.Color = RandomInventoryGenerator(applicationContext).generateRandomColor()
 
-        inventoryInstance!!.postInventoryItem(credentials!!, inventoryItem)
+        inventoryInstance!!.postInventoryItem(vinpointCredentials!!, inventoryItem)
                 .subscribe({ response ->
                     updateTestUiResult(textView_put_network_inventory_item_stat, true)
                     testGetNetworkDealership()
@@ -126,7 +145,7 @@ class TestingActivity : AppCompatActivity() {
 
         val dealershipId = this.inventory!![0].DealershipId
 
-        dealershipInstance!!.getDealership(credentials!!, dealershipId!!)
+        dealershipInstance!!.getDealership(vinpointCredentials!!, dealershipId!!)
                 .subscribe({ response ->
                     updateTestUiResult(textView_get_network_dealership_stat, true)
                     testGetNetworkPrinters()
@@ -139,7 +158,7 @@ class TestingActivity : AppCompatActivity() {
     private fun testGetNetworkPrinters() {
         val dealershipId = this.inventory!![0].DealershipId
 
-        printerInstance!!.getPrinters(credentials!!, dealershipId!!)
+        printerInstance!!.getPrinters(vinpointCredentials!!, dealershipId!!)
                 .subscribe({ response ->
                     updateTestUiResult(textView_get_printers_stat, true)
                     testGetOrganizations()
@@ -151,7 +170,7 @@ class TestingActivity : AppCompatActivity() {
 
     private fun testGetOrganizations() {
 
-        organizationInstance!!.getOrganizationsByUserId(credentials!!)
+        organizationInstance!!.getOrganizationsByUserId(vinpointCredentials!!)
                 .subscribe({ response ->
                     updateTestUiResult(textView_get_organizations_stat, true)
                     testGetJournal()
@@ -163,7 +182,7 @@ class TestingActivity : AppCompatActivity() {
 
     private fun testGetJournal() {
 
-        journalInstance!!.getVinpointJournal(credentials!!, this.inventory!![0].InventoryId!!)
+        journalInstance!!.getVinpointJournal(vinpointCredentials!!, this.inventory!![0].InventoryId!!)
                 .subscribe({ response ->
                     updateTestUiResult(textView_get_journal_stat, true)
                 }, { error ->
