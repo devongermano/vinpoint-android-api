@@ -13,10 +13,10 @@ import io.reactivex.Single
 class Scan(context: Context) {
 
     private val queue: VolleySingleton = VolleySingleton.getInstance(context)
-    private val scannerEndpoint: String? = VinpointAPI.Environment.ScannerAPIEndpoint
+    private val vinpointEndpoint: String? = VinpointAPI.Environment.APIEndpoint
 
     fun verifyVehicle(credentials: CPCredentials, vin: String, dealershipId: Int, orgId: Int, statusResponse: CPStatusResponse? = null): Single<CPInventory> {
-        val url = "$scannerEndpoint/v1/Scanner/VerifyVehicle/$vin/DealershipId/$dealershipId/OrganizationId/$orgId"
+        val url = "$vinpointEndpoint/v1/Scanner/VerifyVehicle/$vin/DealershipId/$dealershipId/OrganizationId/$orgId"
         return RequestFactory.getSecureSingle(credentials, queue, GET, url, null, CPInventory::class.java, statusResponse)
     }
 }
