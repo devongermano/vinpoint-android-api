@@ -1,7 +1,9 @@
 package io.cphandheld.vinpoint.api.models
 
+import java.io.Serializable
 
-open class CPDealership {
+
+open class CPDealership : Serializable {
 
     var RecordId: Int? = null
     var Name: String? = null

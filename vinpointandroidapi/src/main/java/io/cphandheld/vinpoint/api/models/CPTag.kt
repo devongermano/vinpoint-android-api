@@ -1,7 +1,9 @@
 package io.cphandheld.vinpoint.api.models
 
+import java.io.Serializable
 
-open class CPTag {
+
+open class CPTag : Serializable {
 
     var RecordId: Int? = null
     var TagDefinitionId: Int? = null

@@ -2,6 +2,7 @@ package io.cphandheld.vinpoint.api.models
 
 
 open class CPOrganization {
+
     var RecordId: Int? = null
     var Name: String? = null
     var Type: String? = null

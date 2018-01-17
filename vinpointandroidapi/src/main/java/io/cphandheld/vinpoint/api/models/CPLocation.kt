@@ -1,7 +1,9 @@
 package io.cphandheld.vinpoint.api.models
 
+import java.io.Serializable
 
-open class CPLocation {
+
+open class CPLocation : Serializable {
 
     var RecordId: Int? = null
     var DealershipId: Int? = null

@@ -1,13 +1,12 @@
 package io.cphandheld.vinpoint.api.models
 
+import java.io.Serializable
 
-open class CPInventory {
+open class CPInventory: Serializable {
 
     var DealershipName: String? = null
     var LocationName: String? = null
     var Status: Int? = null
-//    var Journal: RealmList<CPJournal>? = null
-//    var JournalVehicle: Any? = null
     var Tags: List<CPTag>? = null
     var InventoryId: Int? = null
     var InventoryStatus: String? = null

@@ -1,7 +1,9 @@
 package io.cphandheld.vinpoint.api.models
 
+import java.io.Serializable
 
-open class CPEnvironment {
+
+open class CPEnvironment: Serializable {
 
     var APIEndpoint: String? = null
     var PrinterAPIEndpoint: String? = null
