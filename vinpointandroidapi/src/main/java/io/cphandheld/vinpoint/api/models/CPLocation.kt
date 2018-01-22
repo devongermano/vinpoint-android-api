@@ -16,4 +16,8 @@ open class CPLocation : Serializable {
     var LastUpdatedDate: String? = null
     var LastUpdatedUser: Int? = null
     var GeoFence: String? = null
+
+    override fun toString(): String {
+        return this.Name ?: ""
+    }
 }

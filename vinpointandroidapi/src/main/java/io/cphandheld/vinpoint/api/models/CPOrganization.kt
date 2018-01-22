@@ -20,4 +20,8 @@ open class CPOrganization {
     var LastUpdatedUser: Int? = null
     var ScannerOrganizationId: Int? = null
     var PrinterOrganizationId: Int? = null
+
+    override fun toString(): String {
+        return this.Name ?: ""
+    }
 }

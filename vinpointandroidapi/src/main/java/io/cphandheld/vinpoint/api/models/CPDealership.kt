@@ -16,4 +16,8 @@ open class CPDealership : Serializable {
     var Zip: String? = null
     var Phone: String? = null
     var UserDealershipId: Int? = null
+
+    override fun toString(): String {
+        return this.Name ?: ""
+    }
 }
