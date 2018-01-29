@@ -4,7 +4,6 @@ import android.content.Context
 import com.android.volley.Request.Method.GET
 import com.android.volley.Request.Method.POST
 import io.cphandheld.vinpoint.api.models.CPCredentials
-import io.cphandheld.vinpoint.api.models.CPOrganization
 import io.cphandheld.vinpoint.api.models.CPStatusResponse
 import io.cphandheld.vinpoint.api.models.CPTag
 import io.cphandheld.vinpoint.api.utility.RequestFactory
@@ -18,7 +17,7 @@ class Tag(context: Context) {
     private val endpoint: String? = VinpointAPI.Environment.APIEndpoint
 
     fun getTags(credentials: CPCredentials, orgId: Int, statusResponse: CPStatusResponse? = null): Single<Array<CPTag>> {
-        val url = "$endpoint/v1/Organizations/$orgId"
+        val url = "$endpoint/v1/tags/organization/$orgId"
         return RequestFactory.getSecureSingle(credentials, queue, GET, url, null, Array<CPTag>::class.java, statusResponse)
     }
 
