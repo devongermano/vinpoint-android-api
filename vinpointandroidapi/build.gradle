@@ -1,6 +1,6 @@
-apply plugin: 'com.android.library'
+//apply plugin: 'com.android.library'
 
-//apply plugin: 'com.android.application'
+apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
@@ -22,7 +22,7 @@ ext {
     siteUrl = 'https://github.com/devongermano/vinpoint-android-api'
     gitUrl = 'https://github.com/devongermano/vinpoint-android-api.git'
 
-    libraryVersion = '1.0.9'
+    libraryVersion = '1.0.15'
 
     developerId = 'developerId'
     developerName = 'Devon Germano'

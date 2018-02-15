@@ -5,9 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.TextView
 import io.cphandheld.vinpoint.api.*
-import io.cphandheld.vinpoint.api.models.CPCredentials
-import io.cphandheld.vinpoint.api.models.CPEnvironment
-import io.cphandheld.vinpoint.api.models.CPInventory
+import io.cphandheld.vinpoint.api.models.*
 import kotlinx.android.synthetic.main.activity_testing.*
 
 
@@ -29,6 +27,7 @@ class TestingActivity : AppCompatActivity() {
     var printerInstance: Printer? = null
     var organizationInstance: Organization? = null
     var journalInstance: Journal? = null
+    var filterInstance: Filter? = null
 
     var vinpointCredentials: CPCredentials? = null
 
@@ -61,6 +60,7 @@ class TestingActivity : AppCompatActivity() {
         organizationInstance = Organization(applicationContext)
         journalInstance = Journal(applicationContext)
         securityInstance = Security(applicationContext)
+        filterInstance = Filter(applicationContext)
 
        securityInstance!!.login(username, password)
         .subscribe({ response ->
@@ -129,7 +129,7 @@ class TestingActivity : AppCompatActivity() {
 
         val inventoryItem = this.inventory!![0]
 
-        inventoryItem.Color = RandomInventoryGenerator(applicationContext).generateRandomColor()
+//        inventoryItem.Color = RandomInventoryGenerator(applicationContext).generateRandomColor()
 
         inventoryInstance!!.postInventoryItem(vinpointCredentials!!, inventoryItem)
                 .subscribe({ response ->
@@ -185,9 +185,35 @@ class TestingActivity : AppCompatActivity() {
         journalInstance!!.getVinpointJournal(vinpointCredentials!!, this.inventory!![0].InventoryId!!)
                 .subscribe({ response ->
                     updateTestUiResult(textView_get_journal_stat, true)
+                    testGetFilters()
                 }, { error ->
                     updateTestUiResult(textView_get_journal_stat, false)
+                    testGetFilters()
                 })
+    }
+
+    private fun testGetFilters() {
+        filterInstance!!.getFilters(vinpointCredentials!!).subscribe({ response ->
+            updateTestUiResult(textView_get_filter_stat, true)
+            testPostFilters(response.Makes!![2])
+        }, { error ->
+            updateTestUiResult(textView_get_filter_stat, false)
+        })
+    }
+
+    private fun testPostFilters(make: String) {
+
+        val filterRequest: CPFilterRequest = CPFilterRequest()
+        filterRequest.Makes = arrayListOf(make)
+
+        val pair: Pair<String, CPFilterRequest> = Pair("data", filterRequest)
+        val hashMap: HashMap<String, CPFilterRequest> = hashMapOf(pair)
+
+        filterInstance!!.postFilters(vinpointCredentials!!, hashMap).subscribe({ response ->
+            updateTestUiResult(textView_post_filter_stat, true)
+        }, { error ->
+            updateTestUiResult(textView_post_filter_stat, false)
+        })
     }
 
     private fun updateTestUiResult(textView: TextView, testPassed: Boolean) {
