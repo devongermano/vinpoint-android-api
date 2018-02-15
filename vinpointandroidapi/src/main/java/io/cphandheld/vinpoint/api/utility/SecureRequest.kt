@@ -12,8 +12,9 @@ import io.reactivex.SingleEmitter
 
 class SecureRequest<T>(private val credentials: CPCredentials, method: Int, url: String, jsonRequest: Any?, responseType: Class<T>,
                        subscriber: SingleEmitter<T>, statusResponse: CPStatusResponse? = null)
+    : Request<T>(method, url, jsonRequest, responseType, subscriber, statusResponse) {
 
-    :Request<T>(method, url, jsonRequest, responseType, subscriber, statusResponse) {
+
 
     //Set Headers
     override fun getHeaders(): MutableMap<String, String> {

@@ -5,9 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.TextView
 import io.cphandheld.vinpoint.api.*
-import io.cphandheld.vinpoint.api.models.CPCredentials
-import io.cphandheld.vinpoint.api.models.CPEnvironment
-import io.cphandheld.vinpoint.api.models.CPInventory
+import io.cphandheld.vinpoint.api.models.*
 import kotlinx.android.synthetic.main.activity_testing.*
 
 
@@ -29,6 +27,7 @@ class TestingActivity : AppCompatActivity() {
     var printerInstance: Printer? = null
     var organizationInstance: Organization? = null
     var journalInstance: Journal? = null
+    var filterInstance: Filter? = null
 
     var vinpointCredentials: CPCredentials? = null
 
@@ -61,6 +60,7 @@ class TestingActivity : AppCompatActivity() {
         organizationInstance = Organization(applicationContext)
         journalInstance = Journal(applicationContext)
         securityInstance = Security(applicationContext)
+        filterInstance = Filter(applicationContext)
 
        securityInstance!!.login(username, password)
         .subscribe({ response ->
@@ -129,7 +129,7 @@ class TestingActivity : AppCompatActivity() {
 
         val inventoryItem = this.inventory!![0]
 
-        inventoryItem.Color = RandomInventoryGenerator(applicationContext).generateRandomColor()
+//        inventoryItem.Color = RandomInventoryGenerator(applicationContext).generateRandomColor()
 
         inventoryInstance!!.postInventoryItem(vinpointCredentials!!, inventoryItem)
                 .subscribe({ response ->
@@ -185,9 +185,145 @@ class TestingActivity : AppCompatActivity() {
         journalInstance!!.getVinpointJournal(vinpointCredentials!!, this.inventory!![0].InventoryId!!)
                 .subscribe({ response ->
                     updateTestUiResult(textView_get_journal_stat, true)
+                    testGetFilters()
                 }, { error ->
                     updateTestUiResult(textView_get_journal_stat, false)
+                    testGetFilters()
                 })
+    }
+
+    private fun testGetFilters() {
+        filterInstance!!.getFilters(vinpointCredentials!!).subscribe({ response ->
+            updateTestUiResult(textView_get_filter_stat, true)
+            testPostFilterDealerships(response)
+        }, { error ->
+            updateTestUiResult(textView_get_filter_stat, false)
+        })
+    }
+
+    private fun testPostFilterDealerships(filterResponse: CPFilterResponse) {
+
+        val selectableFilterResponse = CPSelectableFilterResponse(filterResponse)
+        selectableFilterResponse.Makes.selectElement(3)
+        val filterRequest: CPFilterRequest = CPFilterRequest(selectableFilterResponse)
+
+        val pair: Pair<String, CPFilterRequest> = Pair("data", filterRequest)
+        val hashMap: HashMap<String, CPFilterRequest> = hashMapOf(pair)
+
+        filterInstance!!.postFilters(vinpointCredentials!!, hashMap).subscribe({ response ->
+            Log.e("Result", response.toString())
+            updateTestUiResult(textView_post_filter_dealerships_stat, true)
+            testPostFilterYears(filterResponse)
+        }, { error ->
+            updateTestUiResult(textView_post_filter_dealerships_stat, false)
+            testPostFilterYears(filterResponse)
+        })
+    }
+
+    private fun testPostFilterYears(filterResponse: CPFilterResponse) {
+        val selectableFilterResponse = CPSelectableFilterResponse(filterResponse)
+        selectableFilterResponse.Years.selectElement(3)
+        val filterRequest = CPFilterRequest(selectableFilterResponse)
+
+        val pair: Pair<String, CPFilterRequest> = Pair("data", filterRequest)
+        val hashMap: HashMap<String, CPFilterRequest> = hashMapOf(pair)
+
+        filterInstance!!.postFilters(vinpointCredentials!!, hashMap).subscribe({ response ->
+            Log.e("Result", response.toString())
+            updateTestUiResult(textView_post_filter_year_stat, true)
+            testPostFilterLocations(filterResponse)
+        }, { error ->
+            updateTestUiResult(textView_post_filter_year_stat, false)
+            testPostFilterLocations(filterResponse)
+        })
+    }
+
+    private fun testPostFilterLocations(filterResponse: CPFilterResponse) {
+        val selectableFilterResponse = CPSelectableFilterResponse(filterResponse)
+        selectableFilterResponse.Locations.selectElement(3)
+        val filterRequest = CPFilterRequest(selectableFilterResponse)
+
+        val pair: Pair<String, CPFilterRequest> = Pair("data", filterRequest)
+        val hashMap: HashMap<String, CPFilterRequest> = hashMapOf(pair)
+
+        filterInstance!!.postFilters(vinpointCredentials!!, hashMap).subscribe({ response ->
+            Log.e("Result", response.toString())
+            updateTestUiResult(textView_post_filter_locations_stat, true)
+            testPostFilterModels(filterResponse)
+        }, { error ->
+            updateTestUiResult(textView_post_filter_locations_stat, false)
+            testPostFilterModels(filterResponse)
+        })
+    }
+
+    private fun testPostFilterModels(filterResponse: CPFilterResponse) {
+        val selectableFilterResponse = CPSelectableFilterResponse(filterResponse)
+        selectableFilterResponse.Models.selectElement(3)
+        val filterRequest = CPFilterRequest(selectableFilterResponse)
+
+        val pair: Pair<String, CPFilterRequest> = Pair("data", filterRequest)
+        val hashMap: HashMap<String, CPFilterRequest> = hashMapOf(pair)
+
+        filterInstance!!.postFilters(vinpointCredentials!!, hashMap).subscribe({ response ->
+            Log.e("Result", response.toString())
+            updateTestUiResult(textView_post_filter_model_stat, true)
+            testPostFilterMakes(filterResponse)
+        }, { error ->
+            updateTestUiResult(textView_post_filter_model_stat, false)
+            testPostFilterMakes(filterResponse)
+        })
+    }
+
+    private fun testPostFilterMakes(filterResponse: CPFilterResponse) {
+        val selectableFilterResponse = CPSelectableFilterResponse(filterResponse)
+        selectableFilterResponse.Makes.selectElement(3)
+        val filterRequest = CPFilterRequest(selectableFilterResponse)
+
+        val pair: Pair<String, CPFilterRequest> = Pair("data", filterRequest)
+        val hashMap: HashMap<String, CPFilterRequest> = hashMapOf(pair)
+
+        filterInstance!!.postFilters(vinpointCredentials!!, hashMap).subscribe({ response ->
+            Log.e("Result", response.toString())
+            updateTestUiResult(textView_post_filter_make_stat, true)
+            testPostFilterColors(filterResponse)
+        }, { error ->
+            updateTestUiResult(textView_post_filter_make_stat, false)
+            testPostFilterColors(filterResponse)
+        })
+    }
+
+    private fun testPostFilterColors(filterResponse: CPFilterResponse) {
+        val selectableFilterResponse = CPSelectableFilterResponse(filterResponse)
+        selectableFilterResponse.Colors.selectElement(3)
+        val filterRequest = CPFilterRequest(selectableFilterResponse)
+
+        val pair: Pair<String, CPFilterRequest> = Pair("data", filterRequest)
+        val hashMap: HashMap<String, CPFilterRequest> = hashMapOf(pair)
+
+        filterInstance!!.postFilters(vinpointCredentials!!, hashMap).subscribe({ response ->
+            Log.e("Result", response.toString())
+            updateTestUiResult(textView_post_filter_color_stat, true)
+            testPostFilterTags(filterResponse)
+        }, { error ->
+            updateTestUiResult(textView_post_filter_color_stat, false)
+            testPostFilterTags(filterResponse)
+        })
+    }
+
+    private fun testPostFilterTags(filterResponse: CPFilterResponse) {
+        val selectableFilterResponse = CPSelectableFilterResponse(filterResponse)
+        selectableFilterResponse.Tags.selectElement(3)
+        val filterRequest = CPFilterRequest(selectableFilterResponse)
+
+        val pair: Pair<String, CPFilterRequest> = Pair("data", filterRequest)
+        val hashMap: HashMap<String, CPFilterRequest> = hashMapOf(pair)
+
+        filterInstance!!.postFilters(vinpointCredentials!!, hashMap).subscribe({ response ->
+            Log.e("Result", response.toString())
+            updateTestUiResult(textView_post_filter_tags_stat, true)
+        }, { error ->
+            updateTestUiResult(textView_post_filter_tags_stat, false)
+        })
     }
 
     private fun updateTestUiResult(textView: TextView, testPassed: Boolean) {
