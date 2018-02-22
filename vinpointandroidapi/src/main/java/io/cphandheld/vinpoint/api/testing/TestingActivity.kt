@@ -6,6 +6,9 @@ import android.util.Log
 import android.widget.TextView
 import io.cphandheld.vinpoint.api.*
 import io.cphandheld.vinpoint.api.models.*
+import io.cphandheld.vinpoint.api.models.filter.CPFilterRequest
+import io.cphandheld.vinpoint.api.models.filter.CPFilterResponse
+import io.cphandheld.vinpoint.api.models.filter.CPSelectableFilters
 import kotlinx.android.synthetic.main.activity_testing.*
 
 
@@ -203,8 +206,10 @@ class TestingActivity : AppCompatActivity() {
 
     private fun testPostFilterDealerships(filterResponse: CPFilterResponse) {
 
-        val selectableFilterResponse = CPSelectableFilterResponse(filterResponse)
-        selectableFilterResponse.Makes.selectElement(3)
+        val selectableFilterResponse = filterResponse.toSelectableFilters()
+        val category = selectableFilterResponse.getCategories()[0]
+        val elements = selectableFilterResponse.getElementsForCategory(category)
+        selectableFilterResponse.select(elements[0].id)
         val filterRequest: CPFilterRequest = CPFilterRequest(selectableFilterResponse)
 
         val pair: Pair<String, CPFilterRequest> = Pair("data", filterRequest)
@@ -221,8 +226,10 @@ class TestingActivity : AppCompatActivity() {
     }
 
     private fun testPostFilterYears(filterResponse: CPFilterResponse) {
-        val selectableFilterResponse = CPSelectableFilterResponse(filterResponse)
-        selectableFilterResponse.Years.selectElement(3)
+        val selectableFilterResponse = filterResponse.toSelectableFilters()
+        val category = selectableFilterResponse.getCategories()[1]
+        val elements = selectableFilterResponse.getElementsForCategory(category)
+        selectableFilterResponse.select(elements[0].id)
         val filterRequest = CPFilterRequest(selectableFilterResponse)
 
         val pair: Pair<String, CPFilterRequest> = Pair("data", filterRequest)
@@ -239,8 +246,10 @@ class TestingActivity : AppCompatActivity() {
     }
 
     private fun testPostFilterLocations(filterResponse: CPFilterResponse) {
-        val selectableFilterResponse = CPSelectableFilterResponse(filterResponse)
-        selectableFilterResponse.Locations.selectElement(3)
+        val selectableFilterResponse = filterResponse.toSelectableFilters()
+        val category = selectableFilterResponse.getCategories()[2]
+        val elements = selectableFilterResponse.getElementsForCategory(category)
+        selectableFilterResponse.select(elements[0].id)
         val filterRequest = CPFilterRequest(selectableFilterResponse)
 
         val pair: Pair<String, CPFilterRequest> = Pair("data", filterRequest)
@@ -257,8 +266,10 @@ class TestingActivity : AppCompatActivity() {
     }
 
     private fun testPostFilterModels(filterResponse: CPFilterResponse) {
-        val selectableFilterResponse = CPSelectableFilterResponse(filterResponse)
-        selectableFilterResponse.Models.selectElement(3)
+        val selectableFilterResponse = filterResponse.toSelectableFilters()
+        val category = selectableFilterResponse.getCategories()[3]
+        val elements = selectableFilterResponse.getElementsForCategory(category)
+        selectableFilterResponse.select(elements[0].id)
         val filterRequest = CPFilterRequest(selectableFilterResponse)
 
         val pair: Pair<String, CPFilterRequest> = Pair("data", filterRequest)
@@ -275,8 +286,10 @@ class TestingActivity : AppCompatActivity() {
     }
 
     private fun testPostFilterMakes(filterResponse: CPFilterResponse) {
-        val selectableFilterResponse = CPSelectableFilterResponse(filterResponse)
-        selectableFilterResponse.Makes.selectElement(3)
+        val selectableFilterResponse = filterResponse.toSelectableFilters()
+        val category = selectableFilterResponse.getCategories()[4]
+        val elements = selectableFilterResponse.getElementsForCategory(category)
+        selectableFilterResponse.select(elements[0].id)
         val filterRequest = CPFilterRequest(selectableFilterResponse)
 
         val pair: Pair<String, CPFilterRequest> = Pair("data", filterRequest)
@@ -293,8 +306,10 @@ class TestingActivity : AppCompatActivity() {
     }
 
     private fun testPostFilterColors(filterResponse: CPFilterResponse) {
-        val selectableFilterResponse = CPSelectableFilterResponse(filterResponse)
-        selectableFilterResponse.Colors.selectElement(3)
+        val selectableFilterResponse = filterResponse.toSelectableFilters()
+        val category = selectableFilterResponse.getCategories()[5]
+        val elements = selectableFilterResponse.getElementsForCategory(category)
+        selectableFilterResponse.select(elements[0].id)
         val filterRequest = CPFilterRequest(selectableFilterResponse)
 
         val pair: Pair<String, CPFilterRequest> = Pair("data", filterRequest)
@@ -311,8 +326,10 @@ class TestingActivity : AppCompatActivity() {
     }
 
     private fun testPostFilterTags(filterResponse: CPFilterResponse) {
-        val selectableFilterResponse = CPSelectableFilterResponse(filterResponse)
-        selectableFilterResponse.Tags.selectElement(3)
+        val selectableFilterResponse = filterResponse.toSelectableFilters()
+        val category = selectableFilterResponse.getCategories()[6]
+        val elements = selectableFilterResponse.getElementsForCategory(category)
+        selectableFilterResponse.select(elements[0].id)
         val filterRequest = CPFilterRequest(selectableFilterResponse)
 
         val pair: Pair<String, CPFilterRequest> = Pair("data", filterRequest)
