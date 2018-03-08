@@ -16,7 +16,7 @@ class TestingActivity : AppCompatActivity() {
 
     val mTag = "TestingActivity"
 
-    val username = "test@test.com"
+    val username = "readonly@test.com"
     val password = "Password1"
     val orgId = 1
     // Immutable
@@ -31,6 +31,7 @@ class TestingActivity : AppCompatActivity() {
     var organizationInstance: Organization? = null
     var journalInstance: Journal? = null
     var filterInstance: Filter? = null
+    var scanInstance: Scan? = null
 
     var vinpointCredentials: CPCredentials? = null
 
@@ -53,7 +54,7 @@ class TestingActivity : AppCompatActivity() {
         environment.ScannerAPIEndpoint = "https://orion.cpht.io/scanner-api"
         environment.VinpointAuth0ClientID = "ZewaRueG57rtsjl6n6FZgXE0yHk4wInS"
         environment.Auth0Endpoint = "https://cpht.auth0.com/oauth/ro"
-        environment.ScannerAPIEndpoint = "496priyO44FWmZu5YQ27s6AJDJmQU702"
+        environment.ScannerAuth0ClientID = "496priyO44FWmZu5YQ27s6AJDJmQU702"
 
         VinpointAPI.Environment = environment
 
@@ -64,6 +65,7 @@ class TestingActivity : AppCompatActivity() {
         journalInstance = Journal(applicationContext)
         securityInstance = Security(applicationContext)
         filterInstance = Filter(applicationContext)
+        scanInstance = Scan(applicationContext)
 
        securityInstance!!.login(username, password)
         .subscribe({ response ->
@@ -98,6 +100,11 @@ class TestingActivity : AppCompatActivity() {
                     updateTestUiResult(textView_get_network_inventory_stat, true)
 
                     this.inventory = response
+                    if(this.inventory != null && this.inventory!!.isNotEmpty()) {
+                        testUpdateLatLong(this.inventory!![0])
+                    } else {
+                        Log.e(mTag, "No inventory to test Lat Long Update")
+                    }
 
                     testGetNetworkInventoryItem()
 
@@ -351,5 +358,18 @@ class TestingActivity : AppCompatActivity() {
             textView.text = testPass
             textView.setTextColor(resources.getColor(R.color.green))
         }
+    }
+
+    private fun testUpdateLatLong(inventory: CPInventory) {
+        securityInstance!!.delegateScannerAPI(vinpointCredentials!!).subscribe({
+            scanInstance!!.updateLatLong(CPCredentials(it.id_token!!, vinpointCredentials!!.orgID), inventory, 0.0, 0.0).subscribe({
+                Log.i(mTag, "Succesfully updated lat and lng")
+            }, {
+                Log.e(mTag, "Could not update latitude and longitude: $it")
+            })
+        }, { error ->
+            Log.e(mTag, "Error delegating to scanner api")
+        })
+
     }
 }

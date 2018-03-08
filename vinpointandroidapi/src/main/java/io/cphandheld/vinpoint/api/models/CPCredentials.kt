@@ -1,13 +1,12 @@
 package io.cphandheld.vinpoint.api.models
 
+import com.auth0.android.jwt.JWT
 
-class CPCredentials(token: String, orgId: Int) {
 
-    var authToken: String? = null
-    var orgID: Int? = null
+class CPCredentials(val authToken: String, val orgID: Int) {
+    var parsed_jwt = JWT(authToken)
 
-    init {
-        authToken = token
-        orgID = orgId
+    public fun getUserId(): String? {
+        return parsed_jwt.getClaim("sub").asString()
     }
 }

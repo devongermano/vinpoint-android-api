@@ -1,5 +1,6 @@
 package io.cphandheld.vinpoint.api.utility
 
+import android.util.Log
 import io.cphandheld.vinpoint.api.models.CPCredentials
 import io.cphandheld.vinpoint.api.models.CPStatusResponse
 import io.reactivex.SingleEmitter
