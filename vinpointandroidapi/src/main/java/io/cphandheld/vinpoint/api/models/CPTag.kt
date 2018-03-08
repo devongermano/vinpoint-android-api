@@ -13,4 +13,5 @@ open class CPTag : Serializable {
     var Status: Int? = null
     var OrganizationId: Int? = null
     var DefaultStatus: Int? = null
+    var Type: String? = null
 }
